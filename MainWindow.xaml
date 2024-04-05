@@ -1,0 +1,77 @@
+﻿<Window x:Class="BitCraftulator.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:BitCrafter"
+        mc:Ignorable="d"
+        Title="BitCraftulator" Height="450" Width="800"
+        WindowStyle="None" 
+        AllowsTransparency="True" 
+        Background="Transparent"
+        Opacity="0.7">
+    
+    <Border Background="White" CornerRadius="20">
+        <Grid>
+            <!-- First Row: Buttons -->
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="2"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            
+            <Label Grid.Row="2" Margin="-60" FontSize="50" FontStyle="Oblique" Content="________________________________________________________________________________________________________________"/>
+            
+            <StackPanel Grid.Row="1" Grid.Column="0" Orientation="Horizontal">
+                <Label Margin="5" Content="Choose a recipe tier: "/>
+                <Button Name="I" Margin="5" Content="I" Width="50"/>
+                <Button Name="II" Margin="5" Content="II" Width="50"/>
+                <Button Name="III" Margin="5" Content="III" Width="50"/>
+                <Button Name="IV" Margin="5" Content="IV" Width="50"/>
+                <Button Name="V" Margin="5" Content="V" Width="50"/>
+                <Button Name="VI" Margin="5" Content="VI" Width="50"/>
+                <Button Name="All" Margin="5" Content="All" Width="50"/>
+                <TextBox Margin="5" Text="Search for an item (in the works)" Width="225"/>
+            </StackPanel>
+
+           
+            <!-- Below Row: Scrollable 2D Table -->
+            <ScrollViewer Grid.Row="3" Margin="10" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
+                <Grid Name="RecipesGrid">
+                    <!-- Add columns and rows for the table -->
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <!-- Add more ColumnDefinitions if needed -->
+                    </Grid.ColumnDefinitions>
+
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <!-- Add more RowDefinitions if needed -->
+                    </Grid.RowDefinitions>
+
+                    <!-- Table Content -->
+                </Grid>
+            </ScrollViewer>
+            
+            <Border Grid.Row="0" CornerRadius="20" Background="Transparent" Height="5">
+                <Thumb DragDelta="Thumb_DragDelta" Background="Transparent" />
+            </Border>
+            
+        </Grid>
+    </Border>
+</Window>

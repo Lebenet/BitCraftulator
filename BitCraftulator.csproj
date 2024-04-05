@@ -1,0 +1,27 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <OutputType>WinExe</OutputType>
+        <TargetFramework>net8.0-windows</TargetFramework>
+        <Nullable>enable</Nullable>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <UseWPF>true</UseWPF>
+        <RootNamespace>BitCrafter</RootNamespace>
+    </PropertyGroup>
+
+
+    <ItemGroup>
+      <Folder Include="Images\VI\" />
+      <Folder Include="Images\V\" />
+      <Folder Include="Images\IV\" />
+      <Folder Include="Images\III\" />
+      <Folder Include="Images\II\" />
+      <Folder Include="Images\I\" />
+    </ItemGroup>
+
+
+    <ItemGroup>
+      <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+    </ItemGroup>
+
+</Project>

@@ -1,0 +1,43 @@
+﻿<Window x:Class="BitCraftulator.RecipeInfo"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:local="clr-namespace:BitCrafter"
+             mc:Ignorable="d"
+             Title="BitCrafter" Height="450" Width="800"
+             WindowStyle="None" 
+             AllowsTransparency="True" 
+             Background="White"
+             Opacity="0.7">
+    
+    
+    
+    <Border Grid.Row="0" Background="LightGray">
+        <!-- Title bar -->
+        <StackPanel>
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="50"/>
+                    <RowDefinition Height="50"/>
+                    <RowDefinition Height="50"/>
+                    <RowDefinition Height="50"/>
+                    <RowDefinition Height="50"/>
+                    <RowDefinition Height="50"/>
+                </Grid.RowDefinitions>
+                
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="100"/>
+                    <ColumnDefinition Width="300"/>
+                    <ColumnDefinition Width="100"/>
+                </Grid.ColumnDefinitions>
+                
+                
+            </Grid>
+            <Thumb DragDelta="Thumb_DragDelta" Height="5000"/>
+        </StackPanel>
+    </Border>
+    
+</Window>
+
+
