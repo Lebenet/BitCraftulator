@@ -53,6 +53,10 @@ public partial class MainWindow : Window
         IV.Click += (sender, e) => DisplayRecipes(((Button)sender).Name);
         V.Click += (sender, e) => DisplayRecipes(((Button)sender).Name);
         VI.Click += (sender, e) => DisplayRecipes(((Button)sender).Name);
+        SearchBar.PreviewMouseDown += (sender, e) =>
+        {
+            if (!SearchBar.IsFocused) SearchBar.Text = "";
+        };
     }
     
     public int to_int(string input) => input switch {"I"=>1,"II"=>2,"III"=>3,"IV"=>4,"V"=>5,"VI"=>6,_=>throw new NotImplementedException()};

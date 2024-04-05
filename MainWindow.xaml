@@ -31,7 +31,7 @@
                 <Button Name="IV" Margin="5" Content="IV" Width="50"/>
                 <Button Name="V" Margin="5" Content="V" Width="50"/>
                 <Button Name="VI" Margin="5" Content="VI" Width="50"/>
-                <TextBox Margin="5" Text="Search for an item (in the works)" Width="270"/>
+                <TextBox Name="SearchBar" Margin="5" Text="Search for an item (in the works)" Width="270"/>
             </StackPanel>
 
            <Grid Grid.Row="3">
