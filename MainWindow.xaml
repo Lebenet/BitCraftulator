@@ -31,46 +31,78 @@
                 <Button Name="IV" Margin="5" Content="IV" Width="50"/>
                 <Button Name="V" Margin="5" Content="V" Width="50"/>
                 <Button Name="VI" Margin="5" Content="VI" Width="50"/>
-                <Button Name="All" Margin="5" Content="All" Width="50"/>
-                <TextBox Margin="5" Text="Search for an item (in the works)" Width="225"/>
+                <TextBox Margin="5" Text="Search for an item (in the works)" Width="270"/>
             </StackPanel>
 
-           
-            <!-- Below Row: Scrollable 2D Table -->
-            <ScrollViewer Grid.Row="3" Margin="10" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
-                <Grid Name="RecipesGrid">
-                    <!-- Add columns and rows for the table -->
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="Auto"/>
-                        <!-- Add more ColumnDefinitions if needed -->
-                    </Grid.ColumnDefinitions>
+           <Grid Grid.Row="3">
+               <Grid.ColumnDefinitions>
+                   <ColumnDefinition Width="500"/>
+                   <ColumnDefinition/>
+               </Grid.ColumnDefinitions>
+               
+               <!-- Below Row: Scrollable 2D Table -->
+               <ScrollViewer Margin="10" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+                   <Grid Name="RecipesGrid">
+                       <!-- Add columns and rows for the table -->
+                       <Grid.ColumnDefinitions>
+                           <ColumnDefinition Width="95"/>
+                           <ColumnDefinition Width="95"/>
+                           <ColumnDefinition Width="95"/>
+                           <ColumnDefinition Width="95"/>
+                           <ColumnDefinition Width="95"/>
+                           <!-- Add more ColumnDefinitions if needed -->
+                       </Grid.ColumnDefinitions>
 
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                        <!-- Add more RowDefinitions if needed -->
-                    </Grid.RowDefinitions>
-
-                    <!-- Table Content -->
-                </Grid>
-            </ScrollViewer>
+                       <Grid.RowDefinitions>
+                           <RowDefinition Height="Auto"/>
+                           <RowDefinition Height="Auto"/>
+                           <RowDefinition Height="Auto"/>
+                           <RowDefinition Height="Auto"/>
+                           <RowDefinition Height="Auto"/>
+                           <RowDefinition Height="Auto"/>
+                           <RowDefinition Height="Auto"/>
+                           <RowDefinition Height="Auto"/>
+                           <RowDefinition Height="Auto"/>
+                           <RowDefinition Height="Auto"/>
+                           <!-- Add more RowDefinitions if needed -->
+                       </Grid.RowDefinitions>
+                       
+                       <Border Grid.Row="0" Grid.Column="0" Margin="5" BorderBrush="Transparent" CornerRadius="10" Background="LightCyan">
+                           <Button Name="Test" Margin="5" Background="Transparent" BorderBrush="Transparent">
+                               <StackPanel>
+                                   <Image Source="/Images/download.png"/>
+                                   <TextBlock Text="Test test test test testsdflgndcfkjgbkldfjbkjngbkljdfghjdfkjhnfgkjhnb" TextWrapping="Wrap"/>
+                               </StackPanel>
+                           </Button>
+                       </Border>
+                   </Grid>
+               </ScrollViewer>
+               
+               <Border Grid.Column="1" Height="400" BorderBrush="Black" BorderThickness="3,0,0,0" Margin="0,1,0,0">
+                   <Grid>
+                       <Grid.RowDefinitions>
+                           <RowDefinition Height="30"/>
+                           <RowDefinition Height="35"/>
+                           <RowDefinition Height="10"/>
+                           <RowDefinition Height="20"/>
+                           <RowDefinition Height="20"/>
+                           <RowDefinition Height="20"/>
+                           <RowDefinition Height="20"/>
+                           <RowDefinition Height="20"/>
+                           <RowDefinition Height="Auto"/>
+                       </Grid.RowDefinitions>
+                        
+                       <Label Grid.Row="0" Content="Recipe Name" FontSize="20" Margin="5,0,0,0" VerticalContentAlignment="Center" Height="35"/>
+                       <Label Grid.Row="1" Content="Recipe Name" FontSize="20" VerticalContentAlignment="Top" Height="35"/>
+                   </Grid>
+               </Border>
+           </Grid>
             
-            <Border Grid.Row="0" CornerRadius="20" Background="Transparent" Height="5">
+            
+            <Border Grid.Row="0" CornerRadius="20" Background="Transparent" Height="20">
                 <Thumb DragDelta="Thumb_DragDelta" Background="Transparent" />
             </Border>
+            
             
         </Grid>
     </Border>
