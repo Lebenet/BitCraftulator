@@ -1,191 +1,97 @@
-﻿
-[
+﻿[
   {
-    "RecipeName": "RecipeA",
+  "RecipeName": "Rough Fabric",
+  "Tier": 1,
+  "SkillName": "Tailor",
+  "SkillLevel": 0,
+  "SkillTool": "Scissors",
+  "Station": "Tailoring Station",
+  "Effort": 50,
+  "Ingredients": [
+    {
+      "Name": "Rough Spool of Thread",
+      "Tier": 1,
+      "Quantity": 2
+    }
+  ],
+  "Output": [
+    {
+      "Name": "Rough Fabric",
+      "Tier": 1,
+      "Quantity": 1
+    }
+  ]
+},
+  {
+    "RecipeName": "Rough Spool of Thread",
     "Tier": 1,
-    "SkillName": "SkillA",
+    "SkillName": "Tailor",
     "SkillLevel": 0,
-    "SkillTool": "ToolA",
-    "Station": "StationA",
-    "Effort": 1,
+    "SkillTool": "Scissors",
+    "Station": "Tailoring Station",
+    "Effort": 50,
     "Ingredients": [
       {
-        "Name": "ItemA",
+        "Name": "Rough Twine",
         "Tier": 1,
-        "Quantity": 1
+        "Quantity": 2
       }
     ],
     "Output": [
       {
-        "Name": "OutputA",
+        "Name": "Rough Spool of Thread",
         "Tier": 1,
         "Quantity": 1
       }
     ]
   },
   {
-    "RecipeName": "RecipeB",
-    "Tier": 2,
-    "SkillName": "SkillB",
-    "SkillLevel": 1,
-    "SkillTool": "ToolB",
-    "Station": "StationB",
-    "Effort": 1,
+    "RecipeName": "Rough Twine",
+    "Tier": 1,
+    "SkillName": "",
+    "SkillLevel": 0,
+    "SkillTool": "",
+    "Station": "",
+    "Effort": 0,
+    "Ingredients": [
+    ],
+    "Output": [
+    ]
+  },
+  {
+    "RecipeName": "Rough Rope",
+    "Tier": 1,
+    "SkillName": "Tailor",
+    "SkillLevel": 0,
+    "SkillTool": "Scissors",
+    "Station": "Tailoring Station",
+    "Effort": 50,
     "Ingredients": [
       {
-        "Name": "ItemA",
+        "Name": "Rough Twine",
         "Tier": 1,
-        "Quantity": 1
-      },
-      {
-        "Name": "ItemB",
-        "Tier": 1,
-        "Quantity": 1
+        "Quantity": 4
       }
     ],
     "Output": [
       {
-        "Name": "OutputA",
-        "Tier": 2,
-        "Quantity": 1
-      },
-      {
-        "Name": "OutputB",
-        "Tier": 2,
+        "Name": "Rough Rope",
+        "Tier": 1,
         "Quantity": 1
       }
     ]
   },
   {
-    "RecipeName": "RecipeC",
-    "Tier": 2,
-    "SkillName": "SkillB",
-    "SkillLevel": 1,
-    "SkillTool": "ToolB",
-    "Station": "StationB",
-    "Effort": 1,
+    "RecipeName": "Rough Twine",
+    "Tier": 1,
+    "SkillName": "",
+    "SkillLevel": 0,
+    "SkillTool": "",
+    "Station": "",
+    "Effort": 0,
     "Ingredients": [
-      {
-        "Name": "ItemA",
-        "Tier": 1,
-        "Quantity": 1
-      },
-      {
-        "Name": "ItemB",
-        "Tier": 1,
-        "Quantity": 1
-      }
     ],
     "Output": [
-      {
-        "Name": "OutputA",
-        "Tier": 2,
-        "Quantity": 1
-      },
-      {
-        "Name": "OutputB",
-        "Tier": 2,
-        "Quantity": 1
-      }
-    ]
-  },
-  {
-    "RecipeName": "RecipeD",
-    "Tier": 2,
-    "SkillName": "SkillB",
-    "SkillLevel": 1,
-    "SkillTool": "ToolB",
-    "Station": "StationB",
-    "Effort": 1,
-    "Ingredients": [
-      {
-        "Name": "ItemA",
-        "Tier": 1,
-        "Quantity": 1
-      },
-      {
-        "Name": "ItemB",
-        "Tier": 1,
-        "Quantity": 1
-      }
-    ],
-    "Output": [
-      {
-        "Name": "OutputA",
-        "Tier": 2,
-        "Quantity": 1
-      },
-      {
-        "Name": "OutputB",
-        "Tier": 2,
-        "Quantity": 1
-      }
-    ]
-  },
-  {
-    "RecipeName": "RecipeEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE",
-    "Tier": 2,
-    "SkillName": "SkillB",
-    "SkillLevel": 1,
-    "SkillTool": "ToolB",
-    "Station": "StationB",
-    "Effort": 1,
-    "Ingredients": [
-      {
-        "Name": "ItemA",
-        "Tier": 1,
-        "Quantity": 1
-      },
-      {
-        "Name": "ItemB",
-        "Tier": 1,
-        "Quantity": 1
-      }
-    ],
-    "Output": [
-      {
-        "Name": "OutputA",
-        "Tier": 2,
-        "Quantity": 1
-      },
-      {
-        "Name": "OutputB",
-        "Tier": 2,
-        "Quantity": 1
-      }
-    ]
-  },
-  {
-    "RecipeName": "RecipeFF FFF FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF",
-    "Tier": 2,
-    "SkillName": "SkillB",
-    "SkillLevel": 1,
-    "SkillTool": "ToolB",
-    "Station": "StationB",
-    "Effort": 1,
-    "Ingredients": [
-      {
-        "Name": "ItemA",
-        "Tier": 1,
-        "Quantity": 1
-      },
-      {
-        "Name": "ItemB",
-        "Tier": 1,
-        "Quantity": 1
-      }
-    ],
-    "Output": [
-      {
-        "Name": "OutputA",
-        "Tier": 2,
-        "Quantity": 1
-      },
-      {
-        "Name": "OutputB",
-        "Tier": 2,
-        "Quantity": 1
-      }
     ]
   }
 ]

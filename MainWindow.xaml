@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:BitCrafter"
         mc:Ignorable="d"
-        Title="BitCraftulator" Height="600" Width="800"
+        Title="BitCraftulator" Height="600" Width="1200"
         WindowStyle="None" 
         AllowsTransparency="True" 
         Background="Transparent"
@@ -21,22 +21,22 @@
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
             
-            <Label Grid.Row="2" Margin="-60" FontSize="50" FontStyle="Oblique" Content="________________________________________________________________________________________________________________"/>
+            <Label Grid.Row="2" Margin="-60" FontSize="50" FontStyle="Oblique" Content="_________________________________________________________________________________________________________________________"/>
             
             <StackPanel Grid.Row="1" Grid.Column="0" Orientation="Horizontal">
                 <Label Margin="5" Content="Choose a recipe tier: "/>
-                <Button Name="I" Margin="5" Content="I" Width="50"/>
-                <Button Name="II" Margin="5" Content="II" Width="50"/>
-                <Button Name="III" Margin="5" Content="III" Width="50"/>
-                <Button Name="IV" Margin="5" Content="IV" Width="50"/>
-                <Button Name="V" Margin="5" Content="V" Width="50"/>
-                <Button Name="VI" Margin="5" Content="VI" Width="50"/>
+                <Button Name="I" Margin="5" Content="I" Width="50" Background="Chartreuse"/>
+                <Button Name="II" Margin="5" Content="II" Width="50" Background="Chartreuse"/>
+                <Button Name="III" Margin="5" Content="III" Width="50" Background="Chartreuse"/>
+                <Button Name="IV" Margin="5" Content="IV" Width="50" Background="Chartreuse"/>
+                <Button Name="V" Margin="5" Content="V" Width="50" Background="Chartreuse"/>
+                <Button Name="VI" Margin="5" Content="VI" Width="50" Background="Chartreuse"/>
                 <TextBox Name="SearchBar" Margin="5" Text="Search for an item (in the works)" Width="270"/>
             </StackPanel>
 
            <Grid Grid.Row="3">
                <Grid.ColumnDefinitions>
-                   <ColumnDefinition Width="500"/>
+                   <ColumnDefinition Width="600"/>
                    <ColumnDefinition/>
                </Grid.ColumnDefinitions>
                
@@ -45,11 +45,11 @@
                    <Grid Name="RecipesGrid">
                        <!-- Add columns and rows for the table -->
                        <Grid.ColumnDefinitions>
-                           <ColumnDefinition Width="95"/>
-                           <ColumnDefinition Width="95"/>
-                           <ColumnDefinition Width="95"/>
-                           <ColumnDefinition Width="95"/>
-                           <ColumnDefinition Width="95"/>
+                           <ColumnDefinition Width="120"/>
+                           <ColumnDefinition Width="120"/>
+                           <ColumnDefinition Width="120"/>
+                           <ColumnDefinition Width="120"/>
+                           <ColumnDefinition Width="120"/>
                            <!-- Add more ColumnDefinitions if needed -->
                        </Grid.ColumnDefinitions>
 
@@ -95,20 +95,20 @@
                        <Label Name="RecipeName" Grid.Row="0" Content="Recipe Name" FontSize="20" HorizontalAlignment="Center" VerticalAlignment="Center" VerticalContentAlignment="Center" Height="35"/>
                        <Label Name="Tier" Grid.Row="1" Content="Tier X" FontSize="20" HorizontalAlignment="Center" VerticalAlignment="Center" VerticalContentAlignment="Center" Height="35"/>
                        <Button Name="Steps" Grid.Row="2" Content="Click to show crafting steps" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                       <Label Name="SkillName" Grid.Row="3" Content="Skill Name" Padding="5,2,0,0" FontSize="15"/>
-                       <Label Name="SkillLevel" Grid.Row="4" Content="Skill Level" Padding="5,2,0,0" FontSize="15" Margin="150,-20,0,0"/>
-                       <Label Name="StationName" Grid.Row="5" Content="Station Name" Padding="5,2,0,0" FontSize="15" Margin="0,-20,0,0"/>
-                       <Label Name="SkillTool" Grid.Row="6" Content="Skill Tool" Padding="5,2,0,0" FontSize="15" Margin="150,-40,0,0"/>
-                       <Label Name="Effort" Grid.Row="7" Content="Effort" Padding="5,2,0,0" FontSize="15" Margin="0,-40,0,0"/>
+                       <Label Name="SkillName" Grid.Row="3" Content="Skill Name" Padding="5,2,0,0" FontSize="15" Margin="50,20,0,-20" HorizontalAlignment="Left"/>
+                       <Label Name="SkillLevel" Grid.Row="4" Content="Skill Level" Padding="5,2,0,0" FontSize="15" Margin="0,0,0,0" HorizontalAlignment="Center"/>
+                       <Label Name="StationName" Grid.Row="5" Content="Station Name" Padding="5,2,0,0" FontSize="15" Margin="0,-20,50,20" HorizontalAlignment="Right"/>
+                       <Label Name="SkillTool" Grid.Row="6" Content="Skill Tool" Padding="5,2,0,0" FontSize="15" Margin="150,-00,0,00" HorizontalAlignment="Left"/>
+                       <Label Name="Effort" Grid.Row="7" Content="Effort" Padding="5,2,0,0" FontSize="15" Margin="0,-20,175,20" HorizontalAlignment="Right"/>
                        
-                       <Grid Grid.Row="8" Margin="0,-48,0,0">
+                       <Grid Grid.Row="8" HorizontalAlignment="Center">
                            <Grid.ColumnDefinitions>
-                               <ColumnDefinition Width="120"/>
+                               <ColumnDefinition Width="250"/>
                                <ColumnDefinition Width="50"/>
-                               <ColumnDefinition Width="120"/>
+                               <ColumnDefinition Width="250"/>
                            </Grid.ColumnDefinitions>
                            
-                           <StackPanel Grid.Column="0">
+                           <StackPanel Grid.Column="0" Margin="-20,0,20,0">
                                <Label Content="Input" FontSize="20" HorizontalContentAlignment="Center" HorizontalAlignment="Center"/>
                                <Border Margin="2,0,0,0" BorderThickness="3" BorderBrush="Black">
                                    <ScrollViewer Margin="3,3,4,0" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
@@ -121,7 +121,7 @@
                            
                            <Image Grid.Column="1" Source="Images/App/Arrow.png" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                            
-                           <StackPanel Grid.Column="2">
+                           <StackPanel Grid.Column="2" Margin="20,0,-20,0">
                                <Label Content="Output" FontSize="20" HorizontalContentAlignment="Center" HorizontalAlignment="Center"/>
                                <Border Margin="0,0,-2,0" BorderThickness="3" BorderBrush="Black" >
                                    <ScrollViewer Margin="3,3,4,0" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">

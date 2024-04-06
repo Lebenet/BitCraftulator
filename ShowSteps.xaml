@@ -1,0 +1,41 @@
+﻿<Window x:Class="BitCraftulator.ShowSteps"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:BitCrafter"
+        mc:Ignorable="d"
+        Title="BitCraftulator" Height="600" Width="800"
+        WindowStyle="None" 
+        Background="Gray">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="20"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        
+        <Border Grid.Row="0" CornerRadius="20" Background="Transparent">
+            <Thumb DragDelta="Thumb_DragDelta" Background="Transparent" />
+        </Border>
+        
+        <Button Name="Close" Grid.Row="0" HorizontalAlignment="Right" Width="30" Content="X" Background="White"/>
+        
+        <Grid Grid.Row="1" Name="StepsGrid">
+            <!-- Example step 
+            <Border Background="Azure" BorderBrush="Gray" BorderThickness="0,3,0,0">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                
+                    <Label Content="Step 1" FontSize="15"/>
+                    <TextBlock Grid.Row="1" Text="Get 4 Rough Twine" TextWrapping="Wrap"/>
+                    <TextBlock Grid.Row="2" Text="Craft 1 Rough Rope at Tailoring Station with tool Scissors (required level 0 minimum in Tailor skill)" TextWrapping="Wrap"/>
+                </Grid>
+            </Border>-->
+            
+        </Grid>
+    </Grid>
+</Window>
