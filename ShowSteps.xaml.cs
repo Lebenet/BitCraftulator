@@ -8,10 +8,13 @@ namespace BitCraftulator;
 
 public partial class ShowSteps : Window
 {
-    public ShowSteps(Stack<List<Recipe>> steps)
+    private int _mainQuantity;
+    public ShowSteps(Stack<List<Recipe>> steps, int mainQuantity)
     {
         InitializeComponent();
 
+        _mainQuantity = mainQuantity;
+        
         var i = 0;
         while (steps.Count > 0)
             DisplayStep(steps.Pop(), i++);
@@ -52,9 +55,9 @@ public partial class ShowSteps : Window
             TextBlock line = new TextBlock { TextWrapping = TextWrapping.Wrap };
             line.SetValue(Grid.RowProperty, elemsGrid.Children.Count);
             if (elem.Ingredients!.Count == 0)
-                line.Text = $"Get {step[elem]} {elem.RecipeName}";
+                line.Text = $"Get {step[elem] * _mainQuantity} {elem.RecipeName}";
             else
-                line.Text = $"Craft {step[elem]} {elem.RecipeName} at {elem.Station} with tool {elem.SkillTool} (required level {elem.SkillLevel} minimum in {elem.SkillName} skill)";
+                line.Text = $"Craft {step[elem] * _mainQuantity} {elem.RecipeName} at {elem.Station} with tool {elem.SkillTool} (required level {elem.SkillLevel} minimum in {elem.SkillName} skill)";
             elemsGrid.Children.Add(line);
         }
 

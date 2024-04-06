@@ -92,7 +92,9 @@
                            <RowDefinition Height="Auto"/>
                        </Grid.RowDefinitions>
                         
-                       <Label Name="RecipeName" Grid.Row="0" Content="Recipe Name" FontSize="20" HorizontalAlignment="Center" VerticalAlignment="Center" VerticalContentAlignment="Center" Height="35"/>
+                       <Label Name="RecipeName" Grid.Row="0" Content="Recipe Name" FontSize="20" HorizontalAlignment="Center" VerticalAlignment="Center" VerticalContentAlignment="Center" Height="35" Margin="0,0,-5,0"/>
+                       <Label Grid.Row="1" Content="Quantity:" HorizontalAlignment="Right" FontSize="20" VerticalContentAlignment="Center" Margin="-50,5,100,-5"/>
+                       <TextBox Name="Quantity" Grid.Row="1" HorizontalAlignment="Left" FontSize="20" VerticalContentAlignment="Center" Margin="500,5,-500,-5" PreviewTextInput="TextBox_PreviewTextInput" MinWidth="30"/>
                        <Label Name="Tier" Grid.Row="1" Content="Tier X" FontSize="20" HorizontalAlignment="Center" VerticalAlignment="Center" VerticalContentAlignment="Center" Height="35"/>
                        <Button Name="Steps" Grid.Row="2" Content="Click to show crafting steps" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                        <Label Name="SkillName" Grid.Row="3" Content="Skill Name" Padding="5,2,0,0" FontSize="15" Margin="50,20,0,-20" HorizontalAlignment="Left"/>

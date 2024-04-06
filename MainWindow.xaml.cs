@@ -113,6 +113,11 @@ public partial class MainWindow : Window
         };
         Close.Click += (sender, e) => Close();
         Steps.Click += (sender, e) => DisplaySteps(((string)RecipeName.Content).Replace("_", " "));
+        Quantity.TextChanged += (sender, e) => UpdateRecipeIngredients(Quantity.Text);
+        Quantity.PreviewMouseDown += (sender, e) =>
+        {
+            if (!Quantity.IsFocused) Quantity.Text = "";
+        };
     }
     
     public int to_int(string input) => input switch {"I"=>1,"II"=>2,"III"=>3,"IV"=>4,"V"=>5,"VI"=>6,_=>throw new NotImplementedException()};
@@ -126,8 +131,14 @@ public partial class MainWindow : Window
         Stack<List<Recipe>> steps = new();
         Recipe recipe = Recipes[recipeName];
         Queue<Recipe?> q = new Queue<Recipe?>();
+
+        int quantity = int.Parse(Quantity.Text);
         
-        steps.Push(new List<Recipe> {recipe});
+        var list = new List<Recipe>();
+        for (var i = 0; i < quantity; i++)
+            list.Add(recipe);
+        
+        steps.Push(list);
         q.Enqueue(recipe);
         q.Enqueue(null);
 
@@ -149,7 +160,7 @@ public partial class MainWindow : Window
             {
                 foreach (var ingredient in curr.Ingredients!)
                 {
-                    for (var i = 0; i < ingredient.Quantity; i++)
+                    for (var i = 0; i < ingredient.Quantity * quantity; i++)
                     {
                         Recipe ingr;
                         try
@@ -167,7 +178,7 @@ public partial class MainWindow : Window
             }
         }
 
-        var stepsWindow = new ShowSteps(steps);
+        var stepsWindow = new ShowSteps(steps, int.Parse(Quantity.Name));
         stepsWindow.Show();
         //PrintSteps(steps);
     }
@@ -183,6 +194,47 @@ public partial class MainWindow : Window
             }
         }
     }
+
+    public void UpdateRecipeIngredients(string q = "")
+    {
+        try
+        {
+            int quantity = q is "" ? 1 : int.Parse(q);
+            Recipe recipe;
+            try
+            {
+                recipe = Recipes[RecipeName.Content.ToString()!];
+            }
+            catch (KeyNotFoundException)
+            {
+                recipe = Items[RecipeName.Content.ToString()!];
+            }
+
+            Effort.Content = $"Effort: {recipe.Effort * quantity}";
+            
+            Ingredients.Children.Clear();
+            foreach (var ingredient in recipe.Ingredients!)
+            {
+                Ingredients.RowDefinitions.Add(new RowDefinition());
+                Label label = new Label { Content = $"[Tier {to_tier(ingredient.Tier)}] {ingredient.Name}: {ingredient.Quantity * quantity}", HorizontalAlignment = HorizontalAlignment.Center};
+                label.SetValue(Grid.RowProperty, Ingredients.Children.Count);
+                Ingredients.Children.Add(label);
+            }
+    
+            Output.Children.Clear();
+            foreach (var output in recipe.Output!)
+            {
+                Output.RowDefinitions.Add(new RowDefinition());
+                Label label = new Label { Content = $"[Tier {to_tier(output.Tier)}] {output.Name}: {output.Quantity * quantity}", HorizontalAlignment = HorizontalAlignment.Center };
+                label.SetValue(Grid.RowProperty, Output.Children.Count);
+                Output.Children.Add(label);
+            }
+        }
+        catch
+        {
+            
+        }
+    }
     
     public void DisplayRecipeIngredients(string recipeName)
     {
@@ -194,25 +246,7 @@ public partial class MainWindow : Window
         SkillLevel.Content = "Level: " + recipe.SkillLevel;
         StationName.Content = "Station: " + recipe.Station;
         SkillTool.Content = "Tool: " + recipe.SkillTool;
-        Effort.Content = "Effort: " + recipe.Effort;
-
-        Ingredients.Children.Clear();
-        foreach (var ingredient in recipe.Ingredients!)
-        {
-            Ingredients.RowDefinitions.Add(new RowDefinition());
-            Label label = new Label { Content = ingredient.ToString(), HorizontalAlignment = HorizontalAlignment.Center};
-            label.SetValue(Grid.RowProperty, Ingredients.Children.Count);
-            Ingredients.Children.Add(label);
-        }
-        
-        Output.Children.Clear();
-        foreach (var output in recipe.Output!)
-        {
-            Output.RowDefinitions.Add(new RowDefinition());
-            Label label = new Label { Content = output.ToString(), HorizontalAlignment = HorizontalAlignment.Center };
-            label.SetValue(Grid.RowProperty, Output.Children.Count);
-            Output.Children.Add(label);
-        }
+        UpdateRecipeIngredients();
     }
     
     public void DisplayRecipes()
@@ -287,4 +321,15 @@ public partial class MainWindow : Window
         }
     }
 
+    private void TextBox_PreviewTextInput(object sender, TextCompositionEventArgs e)
+    {
+        foreach (var ch in e.Text)
+        {
+            if (!char.IsDigit(ch))
+            {
+                e.Handled = true; // Mark the event as handled to prevent non-numeric input
+                return;
+            }
+        }
+    }
 }
