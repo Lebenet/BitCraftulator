@@ -11,6 +11,7 @@
 
 
     <ItemGroup>
+      <Folder Include="Images\App\" />
       <Folder Include="Images\VI\" />
       <Folder Include="Images\V\" />
       <Folder Include="Images\IV\" />

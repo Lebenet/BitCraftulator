@@ -57,6 +57,7 @@ public partial class MainWindow : Window
         {
             if (!SearchBar.IsFocused) SearchBar.Text = "";
         };
+        Close.Click += (sender, e) => Close();
     }
     
     public int to_int(string input) => input switch {"I"=>1,"II"=>2,"III"=>3,"IV"=>4,"V"=>5,"VI"=>6,_=>throw new NotImplementedException()};
@@ -64,8 +65,33 @@ public partial class MainWindow : Window
 
     public void DisplayRecipeIngredients(string recipeName)
     {
+
+        Recipe recipe = Recipes[recipeName];
+        RecipeName.Content = recipeName;
+        Tier.Content = "Tier " + to_tier(recipe.Tier);
+        SkillName.Content = "Skill: " + recipe.SkillName;
+        SkillLevel.Content = "Level: " + recipe.SkillLevel;
+        StationName.Content = "Station: " + recipe.Station;
+        SkillTool.Content = "Tool: " + recipe.SkillTool;
+        Effort.Content = "Effort: " + recipe.Effort;
+
+        Ingredients.Children.Clear();
+        foreach (var ingredient in recipe.Ingredients!)
+        {
+            Ingredients.RowDefinitions.Add(new RowDefinition());
+            Label label = new Label { Content = $"[Tier {ingredient.Tier}] {ingredient.Name}: {ingredient.Tier}" };
+            label.SetValue(Grid.RowProperty, Ingredients.Children.Count);
+            Ingredients.Children.Add(label);
+        }
         
-        Console.WriteLine("1");
+        Output.Children.Clear();
+        foreach (var output in recipe.Output!)
+        {
+            Output.RowDefinitions.Add(new RowDefinition());
+            Label label = new Label { Content = $"[Tier {output.Tier}] {output.Name}: {output.Tier}" };
+            label.SetValue(Grid.RowProperty, Output.Children.Count);
+            Output.Children.Add(label);
+        }
     }
     
     public void DisplayRecipes(string tier = "All")

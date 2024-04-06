@@ -5,11 +5,11 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:BitCrafter"
         mc:Ignorable="d"
-        Title="BitCraftulator" Height="450" Width="800"
+        Title="BitCraftulator" Height="600" Width="800"
         WindowStyle="None" 
         AllowsTransparency="True" 
         Background="Transparent"
-        Opacity="0.7">
+        Opacity="0.95">
     
     <Border Background="White" CornerRadius="20">
         <Grid>
@@ -78,12 +78,12 @@
                    </Grid>
                </ScrollViewer>
                
-               <Border Grid.Column="1" Height="400" BorderBrush="Black" BorderThickness="3,0,0,0" Margin="0,1,0,0">
+               <Border Grid.Column="1" Height="560" BorderBrush="Black" VerticalAlignment="Top" BorderThickness="3,0,0,0" Margin="0,1,0,0">
                    <Grid>
                        <Grid.RowDefinitions>
                            <RowDefinition Height="30"/>
                            <RowDefinition Height="35"/>
-                           <RowDefinition Height="10"/>
+                           <RowDefinition Height="20"/>
                            <RowDefinition Height="20"/>
                            <RowDefinition Height="20"/>
                            <RowDefinition Height="20"/>
@@ -92,8 +92,47 @@
                            <RowDefinition Height="Auto"/>
                        </Grid.RowDefinitions>
                         
-                       <Label Grid.Row="0" Content="Recipe Name" FontSize="20" Margin="5,0,0,0" VerticalContentAlignment="Center" Height="35"/>
-                       <Label Grid.Row="1" Content="Recipe Name" FontSize="20" VerticalContentAlignment="Top" Height="35"/>
+                       <Label Name="RecipeName" Grid.Row="0" Content="Recipe Name" FontSize="20" HorizontalAlignment="Center" VerticalAlignment="Center" VerticalContentAlignment="Center" Height="35"/>
+                       <Label Name="Tier" Grid.Row="1" Content="Tier X" FontSize="20" HorizontalAlignment="Center" VerticalAlignment="Center" VerticalContentAlignment="Center" Height="35"/>
+                       <Button Name="Steps" Grid.Row="2" Content="Click to show crafting steps" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                       <Label Name="SkillName" Grid.Row="3" Content="Skill Name" Padding="5,2,0,0" FontSize="15"/>
+                       <Label Name="SkillLevel" Grid.Row="4" Content="Skill Level" Padding="5,2,0,0" FontSize="15" Margin="150,-20,0,0"/>
+                       <Label Name="StationName" Grid.Row="5" Content="Station Name" Padding="5,2,0,0" FontSize="15" Margin="0,-20,0,0"/>
+                       <Label Name="SkillTool" Grid.Row="6" Content="Skill Tool" Padding="5,2,0,0" FontSize="15" Margin="150,-40,0,0"/>
+                       <Label Name="Effort" Grid.Row="7" Content="Effort" Padding="5,2,0,0" FontSize="15" Margin="0,-40,0,0"/>
+                       
+                       <Grid Grid.Row="8" Margin="0,-48,0,0">
+                           <Grid.ColumnDefinitions>
+                               <ColumnDefinition Width="120"/>
+                               <ColumnDefinition Width="50"/>
+                               <ColumnDefinition Width="120"/>
+                           </Grid.ColumnDefinitions>
+                           
+                           <StackPanel Grid.Column="0">
+                               <Label Content="Input" FontSize="20" HorizontalContentAlignment="Center" HorizontalAlignment="Center"/>
+                               <Border Margin="2,0,0,0" BorderThickness="3" BorderBrush="Black">
+                                   <ScrollViewer Margin="3,3,4,0" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+                                       <Grid Name="Ingredients">
+                                           
+                                       </Grid>
+                                   </ScrollViewer>
+                               </Border>
+                           </StackPanel>
+                           
+                           <Image Grid.Column="1" Source="Images/App/Arrow.png" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                           
+                           <StackPanel Grid.Column="2">
+                               <Label Content="Output" FontSize="20" HorizontalContentAlignment="Center" HorizontalAlignment="Center"/>
+                               <Border Margin="0,0,-2,0" BorderThickness="3" BorderBrush="Black" >
+                                   <ScrollViewer Margin="3,3,4,0" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+                                       <Grid Name="Output">
+                                           
+                                       </Grid>
+                                   </ScrollViewer>
+                               </Border>
+                           </StackPanel>
+                       </Grid>
+                       
                    </Grid>
                </Border>
            </Grid>
@@ -102,6 +141,7 @@
             <Border Grid.Row="0" CornerRadius="20" Background="Transparent" Height="20">
                 <Thumb DragDelta="Thumb_DragDelta" Background="Transparent" />
             </Border>
+            <Button Name="Close" Grid.Row="0" HorizontalAlignment="Right" Width="30" Content="X" Background="White"/>
             
             
         </Grid>
