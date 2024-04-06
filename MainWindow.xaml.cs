@@ -132,13 +132,9 @@ public partial class MainWindow : Window
         Recipe recipe = Recipes[recipeName];
         Queue<Recipe?> q = new Queue<Recipe?>();
 
-        int quantity = int.Parse(Quantity.Text);
+        int quantity = Quantity.Text == "" ? 1 : int.Parse(Quantity.Text);
         
-        var list = new List<Recipe>();
-        for (var i = 0; i < quantity; i++)
-            list.Add(recipe);
-        
-        steps.Push(list);
+        steps.Push(new List<Recipe> {recipe});
         q.Enqueue(recipe);
         q.Enqueue(null);
 
@@ -160,7 +156,7 @@ public partial class MainWindow : Window
             {
                 foreach (var ingredient in curr.Ingredients!)
                 {
-                    for (var i = 0; i < ingredient.Quantity * quantity; i++)
+                    for (var i = 0; i < ingredient.Quantity; i++)
                     {
                         Recipe ingr;
                         try
@@ -178,7 +174,7 @@ public partial class MainWindow : Window
             }
         }
 
-        var stepsWindow = new ShowSteps(steps, int.Parse(Quantity.Name));
+        var stepsWindow = new ShowSteps(steps,quantity);
         stepsWindow.Show();
         //PrintSteps(steps);
     }
