@@ -1,0 +1,97 @@
+﻿[
+  {
+  "RecipeName": "Rough Fabric",
+  "Tier": 1,
+  "SkillName": "Tailor",
+  "SkillLevel": 0,
+  "SkillTool": "Scissors",
+  "Station": "Tailoring Station",
+  "Effort": 50,
+  "Ingredients": [
+    {
+      "Name": "Rough Spool of Thread",
+      "Tier": 1,
+      "Quantity": 2
+    }
+  ],
+  "Output": [
+    {
+      "Name": "Rough Fabric",
+      "Tier": 1,
+      "Quantity": 1
+    }
+  ]
+},
+  {
+    "RecipeName": "Rough Spool of Thread",
+    "Tier": 1,
+    "SkillName": "Tailor",
+    "SkillLevel": 0,
+    "SkillTool": "Scissors",
+    "Station": "Tailoring Station",
+    "Effort": 50,
+    "Ingredients": [
+      {
+        "Name": "Rough Twine",
+        "Tier": 1,
+        "Quantity": 2
+      }
+    ],
+    "Output": [
+      {
+        "Name": "Rough Spool of Thread",
+        "Tier": 1,
+        "Quantity": 1
+      }
+    ]
+  },
+  {
+    "RecipeName": "Rough Twine",
+    "Tier": 1,
+    "SkillName": "",
+    "SkillLevel": 0,
+    "SkillTool": "",
+    "Station": "",
+    "Effort": 0,
+    "Ingredients": [
+    ],
+    "Output": [
+    ]
+  },
+  {
+    "RecipeName": "Rough Rope",
+    "Tier": 1,
+    "SkillName": "Tailor",
+    "SkillLevel": 0,
+    "SkillTool": "Scissors",
+    "Station": "Tailoring Station",
+    "Effort": 50,
+    "Ingredients": [
+      {
+        "Name": "Rough Twine",
+        "Tier": 1,
+        "Quantity": 4
+      }
+    ],
+    "Output": [
+      {
+        "Name": "Rough Rope",
+        "Tier": 1,
+        "Quantity": 1
+      }
+    ]
+  },
+  {
+    "RecipeName": "Rough Twine",
+    "Tier": 1,
+    "SkillName": "",
+    "SkillLevel": 0,
+    "SkillTool": "",
+    "Station": "",
+    "Effort": 0,
+    "Ingredients": [
+    ],
+    "Output": [
+    ]
+  }
+]
