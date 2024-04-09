@@ -7,6 +7,6 @@ Download either:
 - App.zip, then extract
 - the App folder
 
-Open the folder, run the "BitCraftulator - RunApp" shortcut
+Open the folder, install the assembly (provided installer), then run the "BitCraftulator - RunApp" shortcut
 
 If you want to edit the recipes, open the Recipes.json file, but remember that the program won't work if the json format isn't respected
