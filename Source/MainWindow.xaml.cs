@@ -28,23 +28,24 @@ public partial class MainWindow : Window
     {
         InitializeComponent();
 
-        Tiers = new[] { "I", "II", "III", "IV", "V", "VI" };
+        Tiers = new[] { "I", "II", "III", "IV", "V", "VI", "VII", "dev" };
+        int numTiers = Tiers.Length;
         
         // init the recipes dictionaries
-        RecipesByTier = new Dictionary<string, Recipe>[6];
+        RecipesByTier = new Dictionary<string, Recipe>[numTiers];
         Recipes = new();
-        ItemsByTier = new Dictionary<string, Recipe>[6];
+        ItemsByTier = new Dictionary<string, Recipe>[numTiers];
         Items = new();
         
-        for (var i = 0; i < 6; (RecipesByTier[i], ItemsByTier[i++]) = (new Dictionary<string, Recipe>(), new Dictionary<string, Recipe>())){}
+        for (var i = 0; i < numTiers; (RecipesByTier[i], ItemsByTier[i++]) = (new Dictionary<string, Recipe>(), new Dictionary<string, Recipe>())){}
         
         // fills them up with the recipes
         var recipes = JsonConvert.DeserializeObject<List<Recipe>>(File.ReadAllText("Recipes.json"));
         foreach (var recipe in recipes!)
         {
-            if (recipe.Ingredients!.Count > 0)
+            if (recipe.Ingredients!.Count > 0 || recipe.Tier-1 >= 7)
             {
-                RecipesByTier[recipe.Tier-1][recipe.RecipeName!] = recipe;
+                RecipesByTier[recipe.Tier-1 < 7 ? recipe.Tier-1 : 7][recipe.RecipeName!] = recipe;
                 Recipes[recipe.RecipeName!] = recipe;
             }
             else
@@ -53,8 +54,10 @@ public partial class MainWindow : Window
                 Items[recipe.RecipeName!] = recipe;
             }
         }
+        
+        for (var i = 0; i < Recipes.Count + 5; i += 5)
+            RecipesGrid.RowDefinitions.Add(new RowDefinition {Height = new GridLength()});
     
-        PrintRecipes("I");
         DisplayRecipes();
         
         // Attach click event handlers to the tier selection buttons
@@ -100,6 +103,20 @@ public partial class MainWindow : Window
             VI.Background = VI.Background == Brushes.Chartreuse ? Brushes.LightGray : Brushes.Chartreuse;
             DisplayRecipes();
         };
+        VII.Click += (sender, e) =>
+        {
+            string tier = ((Button)sender).Name;
+            Tiers[to_int(tier) - 1] = Tiers[to_int(tier) - 1] is null ? tier: null;
+            VII.Background = VII.Background == Brushes.Chartreuse ? Brushes.LightGray : Brushes.Chartreuse;
+            DisplayRecipes();
+        };
+        dev.Click += (sender, e) =>
+        {
+            string tier = ((Button)sender).Name;
+            Tiers[to_int(tier) - 1] = Tiers[to_int(tier) - 1] is null ? tier: null;
+            dev.Background = dev.Background == Brushes.Chartreuse ? Brushes.LightGray : Brushes.Chartreuse;
+            DisplayRecipes();
+        };
         SearchBar.PreviewMouseDown += (sender, e) =>
         {
             if (!SearchBar.IsFocused) SearchBar.Text = "";
@@ -113,8 +130,8 @@ public partial class MainWindow : Window
         };
     }
     
-    public int to_int(string input) => input switch {"I"=>1,"II"=>2,"III"=>3,"IV"=>4,"V"=>5,"VI"=>6,_=>throw new NotImplementedException()};
-    public string to_tier(int input) => input switch {1=>"I",2=>"II",3=>"III",4=>"IV",5=>"V",6=>"VI",_=>throw new NotImplementedException()};
+    public int to_int(string input) => input switch {"I"=>1,"II"=>2,"III"=>3,"IV"=>4,"V"=>5,"VI"=>6,"VII"=>7,"dev"=>8,_=>throw new NotImplementedException()};
+    public string to_tier(int input) => input switch {1=>"I",2=>"II",3=>"III",4=>"IV",5=>"V",6=>"VI",7=>"VII",8=>"dev",_=>throw new NotImplementedException()};
 
     public void DisplaySteps(string recipeName)
     {
@@ -242,6 +259,8 @@ public partial class MainWindow : Window
     {
         RecipesGrid.Children.Clear();
 
+        
+        
         foreach (var tier in Tiers)
         {
             if (tier is null)
@@ -263,7 +282,7 @@ public partial class MainWindow : Window
                 // The Button inside
                 var button = new Button
                 {
-                    Name = recipeName.Replace(" ", "_"),
+                    Name = "_" + recipeName.Replace(" ", "_").Replace("'","__").Replace(":","999"),
                     Margin = new Thickness(5), 
                     Background = Brushes.Transparent, 
                     BorderBrush = Brushes.Transparent
@@ -286,7 +305,7 @@ public partial class MainWindow : Window
                 elemToAdd.SetValue(Grid.RowProperty, i/5);
             
                 RecipesGrid.Children.Add(elemToAdd);
-                button.Click += (sender, e) => DisplayRecipeIngredients(((Button)sender).Name.Replace("_"," "));
+                button.Click += (sender, e) => DisplayRecipeIngredients(((Button)sender).Name.Replace("__","'").Replace("_"," ").Replace("999",":").Trim());
             
                 i++;
             }

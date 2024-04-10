@@ -1,0 +1,184 @@
+ 10003  |  Ladder3                           | 999 | 1
+ 63007  |  Sturdy Brazier                    | 100 | 3
+ 60005  |  Fountain                          | 1002 | 2
+ 60003  |  Garden Pot                        | 400 | 1
+ 63001  |  Sturdy Wooden Gate                | 1002 | 3
+ 55010  |  Large Peerless Home               | 999 | 6
+ 55008  |  Small Peerless Home               | 999 | 6
+ 55006  |  Medium Exquisite Home             | 999 | 5
+ 54007  |  Large Fine Home                   | 999 | 4
+ 54005  |  Small Fine Home                   | 999 | 4
+ 53006  |  Medium Sturdy Home                | 999 | 3
+ 53004  |  Large Sturdy Townhouse            | 999 | 3
+ 53002  |  Small Sturdy House                | 999 | 3
+ 53000  |  Multiroom Enterable Hut           | 999 | 1
+ 52002  |  Simple Medium Enterable Hut       | 999 | 2
+ 52000  |  Large Enterable Hut               | 999 | 1
+ 51000  |  Small Enterable Hut               | 999 | 1
+ 405    |  Claim Totem                       | 28 | -1
+ 6203   |  Peerless Stockpile                | 4 | 6
+ 4203   |  Fine Stockpile                    | 4 | 4
+ 2203   |  Simple Stockpile                  | 4 | 2
+ 201    |  Bonfire                           | 11 | 1
+ 5038   |  Exquisite Scholar Station         | 48 | 5
+ 3038   |  Sturdy Scholar Station            | 48 | 3
+ 1038   |  Rough Scholar Station             | 48 | 1
+ 5036   |  Exquisite Stone Chest             | 3 | 5
+ 3036   |  Sturdy Stone Chest                | 3 | 3
+ 1036   |  Rough Stone Chest                 | 3 | 1
+ 5035   |  Exquisite Forestry Station        | 44 | 5
+ 3035   |  Sturdy Forestry Station           | 44 | 3
+ 1035   |  Rough Forestry Station            | 44 | 1
+ 5033   |  Exquisite Meat Smoker             | 41 | 5
+ 3033   |  Sturdy Meat Smoker                | 41 | 3
+ 1033   |  Rough Meat Smoker                 | 41 | 1
+ 5032   |  Exquisite Fishing Station         | 40 | 5
+ 3032   |  Sturdy Fishing Station            | 40 | 3
+ 1032   |  Rough Fishing Station             | 40 | 1
+ 10006  |  Trap Door                         | 999 | 1
+ 6030   |  Peerless Farming Station          | 33 | 6
+ 4030   |  Fine Farming Station              | 33 | 4
+ 2030   |  Simple Farming Station            | 33 | 2
+ 6028   |  Peerless Tailoring Station        | 17 | 6
+ 4028   |  Fine Tailoring Station            | 17 | 4
+ 10001  |  Ladder                            | 999 | 1
+ 2028   |  Simple Tailoring Station          | 17 | 2
+ 6026   |  Peerless Smithing Station         | 25 | 6
+ 4026   |  Fine Smithing Station             | 25 | 4
+ 10002  |  Ladder2                           | 999 | 1
+ 2026   |  Simple Smithing Station           | 25 | 2
+ 6025   |  Peerless Smelter                  | 24 | 6
+ 4025   |  Fine Smelter                      | 24 | 4
+ 2025   |  Simple Smelter                    | 24 | 2
+ 6024   |  Peerless Grinder                  | 23 | 6
+ 4024   |  Fine Grinder                      | 23 | 4
+ 2024   |  Simple Grinder                    | 23 | 2
+ 6022   |  Peerless Kiln                     | 21 | 6
+ 4022   |  Fine Kiln                         | 21 | 4
+ 2022   |  Simple Kiln                       | 21 | 2
+ 6020   |  Peerless Carpentry Station        | 20 | 6
+ 4020   |  Fine Carpentry Station            | 20 | 4
+ 2020   |  Simple Carpentry Station          | 20 | 2
+ 6018   |  Peerless Tanning Tub              | 15 | 6
+ 4018   |  Fine Tanning Tub                  | 15 | 4
+ 2018   |  Simple Tanning Tub                | 15 | 2
+ 6017   |  Peerless Leatherworking Station   | 16 | 6
+ 4017   |  Fine Leatherworking Station       | 16 | 4
+ 2017   |  Simple Leatherworking Station     | 16 | 2
+ 5015   |  Exquisite Drying Frame            | 45 | 5
+ 1015   |  Rough Drying Frame                | 45 | 1
+ 409    |  Rental Totem                      | 59 | -1
+ 60     |  Heimlich's Workbench              | 200 | 1
+ 5014   |  Exquisite Loom                    | 14 | 5
+ 3014   |  Sturdy Loom                       | 14 | 3
+ 1014   |  Rough Loom                        | 14 | 1
+ 5013   |  Exquisite Cooking Station         | 13 | 5
+ 3013   |  Sturdy Cooking Station            | 13 | 3
+ 1013   |  Rough Cooking Station             | 13 | 1
+ 5012   |  Exquisite Oven                    | 12 | 5
+ 3012   |  Sturdy Oven                       | 12 | 3
+ 70000  |  Ancient Ruins Pillar              | 1002 | 1
+ 1012   |  Rough Oven                        | 12 | 1
+ 5007   |  Exquisite Large Chest             | 3 | 5
+ 3007   |  Sturdy Large Chest                | 3 | 3
+ 1007   |  Rough Large Chest                 | 3 | 1
+ 5006   |  Exquisite Chest                   | 3 | 5
+ 3006   |  Sturdy Chest                      | 3 | 3
+ 1006   |  Rough Chest                       | 3 | 1
+ 1003   |  Stick Shelter                     | 2 | 1
+ 5002   |  Exquisite Masonry Station         | 22 | 5
+ 3002   |  Sturdy Masonry Station            | 22 | 3
+ 1002   |  Rough Masonry Station             | 22 | 1
+ 50     |  Heimlich's House                  | 999 | 5
+ 8      |  Traveler Camp Interior            | 1 | 1
+ 16     |  Sturdy Well                       | 26 | 1
+ 14     |  Rough Well                        | 26 | 1
+ 10005  |  Ancient Ruins Workbench           | 500 | 1
+ 12     |  Rough Small Stockpile             | 4 | 1
+ 60004  |  Fur Rug                           | 1002 | 1
+ 60002  |  Stone Brazier                     | 1002 | 1
+ 55009  |  Medium Peerless Home              | 999 | 6
+ 55007  |  Large Exquisite Home              | 999 | 5
+ 55005  |  Small Exquisite Home              | 999 | 5
+ 54006  |  Medium Fine Home                  | 999 | 4
+ 53007  |  Large Sturdy Home                 | 999 | 3
+ 53005  |  Small Sturdy Home                 | 999 | 3
+ 53003  |  Small Sturdy Townhouse            | 999 | 3
+ 53001  |  Windmill                          | 999 | 1
+ 52003  |  Simple Large Enterable Hut        | 999 | 2
+ 52001  |  Simple Small Enterable Hut        | 999 | 2
+ 51001  |  Medium Enterable Hut              | 999 | 1
+ 3310   |  Sturdy Large Stone Chest          | 3 | 3
+ 5203   |  Exquisite Stockpile               | 4 | 5
+ 3203   |  Sturdy Stockpile                  | 4 | 3
+ 1203   |  Rough Stockpile                   | 4 | 1
+ 6038   |  Peerless Scholar Station          | 48 | 6
+ 4038   |  Fine Scholar Station              | 48 | 4
+ 2038   |  Simple Scholar Station            | 48 | 2
+ 6036   |  Peerless Stone Chest              | 3 | 6
+ 4036   |  Fine Stone Chest                  | 3 | 4
+ 2036   |  Simple Stone Chest                | 3 | 2
+ 6035   |  Peerless Forestry Station         | 44 | 6
+ 4035   |  Fine Forestry Station             | 44 | 4
+ 2035   |  Simple Forestry Station           | 44 | 2
+ 6033   |  Peerless Meat Smoker              | 41 | 6
+ 4033   |  Fine Meat Smoker                  | 41 | 4
+ 2033   |  Simple Meat Smoker                | 41 | 2
+ 6032   |  Peerless Fishing Station          | 40 | 6
+ 4032   |  Fine Fishing Station              | 40 | 4
+ 2032   |  Simple Fishing Station            | 40 | 2
+ 1031   |  Farming Field                     | 34 | 1
+ 5030   |  Exquisite Farming Station         | 33 | 5
+ 3030   |  Sturdy Farming Station            | 33 | 3
+ 1030   |  Rough Farming Station             | 33 | 1
+ 5028   |  Exquisite Tailoring Station       | 17 | 5
+ 3028   |  Sturdy Tailoring Station          | 17 | 3
+ 1028   |  Rough Tailoring Station           | 17 | 1
+ 5026   |  Exquisite Smithing Station        | 25 | 5
+ 3026   |  Sturdy Smithing Station           | 25 | 3
+ 1026   |  Rough Smithing Station            | 25 | 1
+ 5025   |  Exquisite Smelter                 | 24 | 5
+ 3025   |  Sturdy Smelter                    | 24 | 3
+ 1025   |  Rough Smelter                     | 24 | 1
+ 5024   |  Exquisite Grinder                 | 23 | 5
+ 3024   |  Sturdy Grinder                    | 23 | 3
+ 1024   |  Rough Grinder                     | 23 | 1
+ 5022   |  Exquisite Kiln                    | 21 | 5
+ 3022   |  Sturdy Kiln                       | 21 | 3
+ 1022   |  Rough Kiln                        | 21 | 1
+ 5020   |  Exquisite Carpentry Station       | 20 | 5
+ 3020   |  Sturdy Carpentry Station          | 20 | 3
+ 1020   |  Rough Carpentry Station           | 20 | 1
+ 5018   |  Exquisite Tanning Tub             | 15 | 5
+ 3018   |  Sturdy Tanning Tub                | 15 | 3
+ 1018   |  Rough Tanning Tub                 | 15 | 1
+ 5017   |  Exquisite Leatherworking Station  | 16 | 5
+ 3017   |  Sturdy Leatherworking Station     | 16 | 3
+ 1017   |  Rough Leatherworking Station      | 16 | 1
+ 3015   |  Sturdy Drying Frame               | 45 | 3
+ 6014   |  Peerless Loom                     | 14 | 6
+ 4014   |  Fine Loom                         | 14 | 4
+ 2014   |  Simple Loom                       | 14 | 2
+ 6013   |  Peerless Cooking Station          | 13 | 6
+ 4013   |  Fine Cooking Station              | 13 | 4
+ 2013   |  Simple Cooking Station            | 13 | 2
+ 6012   |  Peerless Oven                     | 12 | 6
+ 4012   |  Fine Oven                         | 12 | 4
+ 2012   |  Simple Oven                       | 12 | 2
+ 6007   |  Peerless Large Chest              | 3 | 6
+ 4007   |  Fine Large Chest                  | 3 | 4
+ 61     |  Twin's Workbench                  | 201 | 1
+ 2007   |  Simple Large Chest                | 3 | 2
+ 6006   |  Peerless Chest                    | 3 | 6
+ 4006   |  Fine Chest                        | 3 | 4
+ 2006   |  Simple Chest                      | 3 | 2
+ 1004   |  Wicker Basket                     | 3 | 1
+ 6002   |  Peerless Masonry Station          | 22 | 6
+ 4002   |  Fine Masonry Station              | 22 | 4
+ 2002   |  Simple Masonry Station            | 22 | 2
+ 1001   |  Crude Workbench                   | 10 | 1
+ 17     |  Basic Bed                         | 2 | 1
+ 15     |  Sturdy Campfire                   | 11 | 3
+ 13     |  Campfire                          | 11 | 1
+ 11     |  Terraforming Digsite              | 29 | 1
+ 63008  |  Sturdy Thin Brazier               | 100 | 3

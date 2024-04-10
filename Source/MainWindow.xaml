@@ -31,6 +31,8 @@
                 <Button Name="IV" Margin="5" Content="IV" Width="50" Background="Chartreuse"/>
                 <Button Name="V" Margin="5" Content="V" Width="50" Background="Chartreuse"/>
                 <Button Name="VI" Margin="5" Content="VI" Width="50" Background="Chartreuse"/>
+                <Button Name="VII" Margin="5" Content="VII" Width="50" Background="Chartreuse"/>
+                <Button Name="dev" Margin="5" Content="dev" Width="50" Background="Chartreuse"/>
                 <TextBox Name="SearchBar" Margin="5" Text="Search for an item (in the works)" Width="270"/>
             </StackPanel>
 
@@ -41,7 +43,7 @@
                </Grid.ColumnDefinitions>
                
                <!-- Below Row: Scrollable 2D Table -->
-               <ScrollViewer Margin="10" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+               <ScrollViewer Margin="2,5,3,-5" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
                    <Grid Name="RecipesGrid">
                        <!-- Add columns and rows for the table -->
                        <Grid.ColumnDefinitions>
@@ -50,22 +52,7 @@
                            <ColumnDefinition Width="120"/>
                            <ColumnDefinition Width="120"/>
                            <ColumnDefinition Width="120"/>
-                           <!-- Add more ColumnDefinitions if needed -->
                        </Grid.ColumnDefinitions>
-
-                       <Grid.RowDefinitions>
-                           <RowDefinition Height="Auto"/>
-                           <RowDefinition Height="Auto"/>
-                           <RowDefinition Height="Auto"/>
-                           <RowDefinition Height="Auto"/>
-                           <RowDefinition Height="Auto"/>
-                           <RowDefinition Height="Auto"/>
-                           <RowDefinition Height="Auto"/>
-                           <RowDefinition Height="Auto"/>
-                           <RowDefinition Height="Auto"/>
-                           <RowDefinition Height="Auto"/>
-                           <!-- Add more RowDefinitions if needed -->
-                       </Grid.RowDefinitions>
                        
                        <Border Grid.Row="0" Grid.Column="0" Margin="5" BorderBrush="Transparent" CornerRadius="10" Background="LightCyan">
                            <Button Name="Test" Margin="5" Background="Transparent" BorderBrush="Transparent">
@@ -98,8 +85,8 @@
                        <Label Name="Tier" Grid.Row="1" Content="Tier X" FontSize="20" HorizontalAlignment="Center" VerticalAlignment="Center" VerticalContentAlignment="Center" Height="35"/>
                        <Button Name="Steps" Grid.Row="2" Content="Click to show crafting steps" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                        <Label Name="SkillName" Grid.Row="3" Content="Skill Name" Padding="5,2,0,0" FontSize="15" Margin="50,20,0,-20" HorizontalAlignment="Left"/>
-                       <Label Name="SkillLevel" Grid.Row="4" Content="Skill Level" Padding="5,2,0,0" FontSize="15" Margin="0,0,0,0" HorizontalAlignment="Center"/>
-                       <Label Name="StationName" Grid.Row="5" Content="Station Name" Padding="5,2,0,0" FontSize="15" Margin="0,-20,50,20" HorizontalAlignment="Right"/>
+                       <Label Name="SkillLevel" Grid.Row="4" Content="Skill Level" Padding="5,2,0,0" FontSize="15" Margin="0,0,50,0" HorizontalAlignment="Right"/>
+                       <Label Name="StationName" Grid.Row="5" Content="Station Name" Padding="5,2,0,0" FontSize="15" Margin="0,-40,0,20" HorizontalAlignment="Center"/>
                        <Label Name="SkillTool" Grid.Row="6" Content="Skill Tool" Padding="5,2,0,0" FontSize="15" Margin="150,-00,0,00" HorizontalAlignment="Left"/>
                        <Label Name="Effort" Grid.Row="7" Content="Effort" Padding="5,2,0,0" FontSize="15" Margin="0,-20,175,20" HorizontalAlignment="Right"/>
                        

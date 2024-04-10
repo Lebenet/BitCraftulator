@@ -1,0 +1,43 @@
+﻿    "RecipeName": string,
+    "Tier": integer,
+    "SkillName": string,
+    "SkillLevel": integer,
+    "SkillTool": string,
+    "Station": string,
+    "Effort": int,
+    "Ingredients": [
+      {
+        "Name": string,
+        "Tier": integer,
+        "Quantity": integer
+      },
+      etc
+    ],
+    "Output": [
+      {
+        "Name": string,
+        "Tier": integer,
+        "Quantity": integer
+      },
+      etc
+    ]
+    
+    
+    {
+        "RecipeName": string,
+        "Tier": integer,
+        "SkillName": "",
+        "SkillLevel": 0,
+        "SkillTool": "",
+        "Station": "",
+        "Effort": 0,
+        "Ingredients": [
+        ],
+        "Output": [
+        ]
+    },
+etc
+    
+    
+    
+Id (replace with name from output) | Tier | SkillName | SkillLevel | Tool | ToolTier | Station | StationLevel | Effort | Ingredients (Name, Tier, Quantity) | Output (Name, Tier, Quantity)  
