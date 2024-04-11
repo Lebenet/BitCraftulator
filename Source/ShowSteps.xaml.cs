@@ -43,7 +43,7 @@ public partial class ShowSteps : Window
         StepsGrid.Children.Add(border);
         
         Grid elemsGrid = new Grid {Name = "Step1"};
-        for (var i = 0; i <= step.Count; i++) elemsGrid.RowDefinitions.Add(new RowDefinition());
+        for (var i = 0; i <= step.Count + 1; i++) elemsGrid.RowDefinitions.Add(new RowDefinition());
         border.Child = elemsGrid;
 
         Label stepLabel = new Label { Content = $"Step {stepNumber + 1}" };
@@ -56,9 +56,13 @@ public partial class ShowSteps : Window
             if (elem.Ingredients!.Count == 0)
                 line.Text = $"Get {step[elem] * _quantity} {elem.RecipeName}";
             else
-                line.Text = $"Craft {step[elem] * _quantity} {elem.RecipeName} at {elem.Station} with tool {elem.SkillTool} (required level {elem.SkillLevel} minimum in {elem.SkillName} skill)";
+                line.Text = $"{( elem.Station!.ToLower().Contains("fiedl") ? "Grow" : "Craft" )} {(elem.Ingredients.Count == 1 && elem.Ingredients[0].Name.Contains("Output") ? "(random amount)" : (step[elem] * _quantity).ToString())} {elem.RecipeName} at {elem.Station} with tool {elem.SkillTool} (required level {elem.SkillLevel} minimum in {elem.SkillName} skill)";
             elemsGrid.Children.Add(line);
         }
+
+        var fin = new TextBlock { TextWrapping = TextWrapping.Wrap };
+        fin.SetValue(Grid.RowProperty, elemsGrid.Children.Count);
+        elemsGrid.Children.Add(fin);
 
     }
 

@@ -43,6 +43,11 @@ public partial class MainWindow : Window
         var recipes = JsonConvert.DeserializeObject<List<Recipe>>(File.ReadAllText("Recipes.json"));
         foreach (var recipe in recipes!)
         {
+            // fix issue with High Quality ( not really cos there's random but eh)
+            foreach (var ingredient in recipe.Ingredients!)
+                if (ingredient.Name!.Contains("High Quality"))
+                    ingredient.Name = ingredient.Name!.Replace("High Quality", "").Trim() + " Output";
+                    
             if (recipe.Ingredients!.Count > 0 || recipe.Tier-1 >= 7)
             {
                 RecipesByTier[recipe.Tier-1 < 7 ? recipe.Tier-1 : 7][recipe.RecipeName!] = recipe;
@@ -54,6 +59,7 @@ public partial class MainWindow : Window
                 Items[recipe.RecipeName!] = recipe;
             }
         }
+
         
         for (var i = 0; i < Recipes.Count + 5; i += 5)
             RecipesGrid.RowDefinitions.Add(new RowDefinition {Height = new GridLength()});
@@ -128,6 +134,11 @@ public partial class MainWindow : Window
         {
             if (!Quantity.IsFocused) Quantity.Text = "";
         };
+        SearchBar.KeyDown += (sender, e) =>
+        {
+            if (e.Key == Key.Enter)
+                DisplayRecipes(SearchBar.Text.ToLower());
+        };
     }
     
     public int to_int(string input) => input switch {"I"=>1,"II"=>2,"III"=>3,"IV"=>4,"V"=>5,"VI"=>6,"VII"=>7,"dev"=>8,_=>throw new NotImplementedException()};
@@ -166,6 +177,15 @@ public partial class MainWindow : Window
             {
                 foreach (var ingredient in curr.Ingredients!)
                 {
+                    if (ingredient.Name == curr.RecipeName)
+                        continue;
+                    
+                    if (ingredient.Name!.ToLower().Contains("seed"))
+                    {
+                        build.Add(Items[ingredient.Name!]);
+                        continue;
+                    }
+                    
                     for (var i = 0; i < ingredient.Quantity; i++)
                     {
                         Recipe ingr;
@@ -231,7 +251,17 @@ public partial class MainWindow : Window
             foreach (var output in recipe.Output!)
             {
                 Output.RowDefinitions.Add(new RowDefinition());
-                Label label = new Label { Content = $"[Tier {to_tier(output.Tier)}] {output.Name}: {output.Quantity * quantity}", HorizontalAlignment = HorizontalAlignment.Center };
+                Label label;
+                try
+                {
+                    var opt = Recipes[output.Name!];
+                    label = new Label {Content = $"[Tier {to_tier(output.Tier)}] {output.Name}: {(opt.Ingredients!.Count == 1 && opt.Ingredients[0].Name!.Contains("Output") ? "(random amount)" : (output.Quantity * quantity).ToString())}", HorizontalAlignment = HorizontalAlignment.Center };
+                }
+                catch
+                {
+                    label = new Label { Content = $"[Tier {to_tier(output.Tier)}] {output.Name}: {output.Quantity * quantity}", HorizontalAlignment = HorizontalAlignment.Center};
+                }
+
                 label.SetValue(Grid.RowProperty, Output.Children.Count);
                 Output.Children.Add(label);
             }
@@ -255,7 +285,7 @@ public partial class MainWindow : Window
         UpdateRecipeIngredients();
     }
     
-    public void DisplayRecipes()
+    public void DisplayRecipes(string search = "")
     {
         RecipesGrid.Children.Clear();
 
@@ -269,6 +299,8 @@ public partial class MainWindow : Window
             var i = RecipesGrid.Children.Count;
             foreach (var (recipeName, recipe) in tier is "All" ? Recipes : RecipesByTier[to_int(tier) - 1])
             {
+                if (!recipeName.ToLower().Contains(search))
+                    continue;
                 // Main element to add
                 var elemToAdd = new Border
                 {
