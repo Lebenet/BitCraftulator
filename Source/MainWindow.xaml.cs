@@ -186,7 +186,7 @@ public partial class MainWindow : Window
                         continue;
                     }
                     
-                    for (var i = 0; i < ingredient.Quantity; i++)
+                    for (var i = 0; i < Math.Clamp(ingredient.Quantity / curr.Output![0].Quantity, 1, ingredient.Quantity); i++)
                     {
                         Recipe ingr;
                         try
