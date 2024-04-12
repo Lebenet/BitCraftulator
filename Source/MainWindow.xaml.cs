@@ -14,7 +14,8 @@ namespace BitCraftulator;
 /// </summary>
 public partial class MainWindow : Window
 {
-
+    private Brush RecipesBackground;
+    private Brush TextColor;
     
     private Dictionary<string, Recipe>[] RecipesByTier { get; set; }
     private Dictionary<string, Recipe> Recipes { get; set; }
@@ -27,6 +28,8 @@ public partial class MainWindow : Window
     public MainWindow()
     {
         InitializeComponent();
+        RecipesBackground = Brushes.LightCyan;
+        TextColor = Brushes.Black;
 
         Tiers = new[] { "I", "II", "III", "IV", "V", "VI", "VII", "dev" };
         int numTiers = Tiers.Length;
@@ -67,62 +70,14 @@ public partial class MainWindow : Window
         DisplayRecipes();
         
         // Attach click event handlers to the tier selection buttons
-        I.Click += (sender, e) =>
-        {
-            string tier = ((Button)sender).Name;
-            Tiers[to_int(tier) - 1] = Tiers[to_int(tier) - 1] is null ? tier: null;
-            I.Background = I.Background == Brushes.Chartreuse ? Brushes.LightGray : Brushes.Chartreuse;
-            DisplayRecipes();
-        };
-        II.Click += (sender, e) =>
-        {
-            string tier = ((Button)sender).Name;
-            Tiers[to_int(tier) - 1] = Tiers[to_int(tier) - 1] is null ? tier: null;
-            II.Background = II.Background == Brushes.Chartreuse ? Brushes.LightGray : Brushes.Chartreuse;
-            DisplayRecipes();
-        };
-        III.Click += (sender, e) =>
-        {
-            string tier = ((Button)sender).Name;
-            Tiers[to_int(tier) - 1] = Tiers[to_int(tier) - 1] is null ? tier: null;
-            III.Background = III.Background == Brushes.Chartreuse ? Brushes.LightGray : Brushes.Chartreuse;
-            DisplayRecipes();
-        };
-        IV.Click += (sender, e) =>
-        {
-            string tier = ((Button)sender).Name;
-            Tiers[to_int(tier) - 1] = Tiers[to_int(tier) - 1] is null ? tier: null;
-            IV.Background = IV.Background == Brushes.Chartreuse ? Brushes.LightGray : Brushes.Chartreuse;
-            DisplayRecipes();
-        };
-        V.Click += (sender, e) =>
-        {
-            string tier = ((Button)sender).Name;
-            Tiers[to_int(tier) - 1] = Tiers[to_int(tier) - 1] is null ? tier: null;
-            V.Background = V.Background == Brushes.Chartreuse ? Brushes.LightGray : Brushes.Chartreuse;
-            DisplayRecipes();
-        };
-        VI.Click += (sender, e) =>
-        {
-            string tier = ((Button)sender).Name;
-            Tiers[to_int(tier) - 1] = Tiers[to_int(tier) - 1] is null ? tier: null;
-            VI.Background = VI.Background == Brushes.Chartreuse ? Brushes.LightGray : Brushes.Chartreuse;
-            DisplayRecipes();
-        };
-        VII.Click += (sender, e) =>
-        {
-            string tier = ((Button)sender).Name;
-            Tiers[to_int(tier) - 1] = Tiers[to_int(tier) - 1] is null ? tier: null;
-            VII.Background = VII.Background == Brushes.Chartreuse ? Brushes.LightGray : Brushes.Chartreuse;
-            DisplayRecipes();
-        };
-        dev.Click += (sender, e) =>
-        {
-            string tier = ((Button)sender).Name;
-            Tiers[to_int(tier) - 1] = Tiers[to_int(tier) - 1] is null ? tier: null;
-            dev.Background = dev.Background == Brushes.Chartreuse ? Brushes.LightGray : Brushes.Chartreuse;
-            DisplayRecipes();
-        };
+        I.Click += (sender, e) => ButtonUpdate((Button)sender);
+        II.Click += (sender, e) => ButtonUpdate((Button)sender);
+        III.Click += (sender, e) => ButtonUpdate((Button)sender);
+        IV.Click += (sender, e) => ButtonUpdate((Button)sender);
+        V.Click += (sender, e) => ButtonUpdate((Button)sender);
+        VI.Click += (sender, e) => ButtonUpdate((Button)sender);
+        VII.Click += (sender, e) => ButtonUpdate((Button)sender);
+        dev.Click += (sender, e) => ButtonUpdate((Button)sender);
         SearchBar.PreviewMouseDown += (sender, e) =>
         {
             if (!SearchBar.IsFocused) SearchBar.Text = "";
@@ -134,15 +89,80 @@ public partial class MainWindow : Window
         {
             if (!Quantity.IsFocused) Quantity.Text = "";
         };
-        SearchBar.KeyDown += (sender, e) =>
+        SearchBar.KeyDown += (sender, e) =>DisplayRecipes(SearchBar.Text.ToLower());
+        DisplayMode.Click += (sender, e) =>
         {
-            if (e.Key == Key.Enter)
-                DisplayRecipes(SearchBar.Text.ToLower());
+            // Define the color and update the button's content
+            var color = (string)DisplayMode.Content == "Light Mode" ? Colors.White : Colors.Black;
+            TextColor = (string)DisplayMode.Content == "Light Mode" ? Brushes.White : Brushes.Black;
+            Background.Background = Background.Background == Brushes.WhiteSmoke ? Brushes.DimGray : Brushes.WhiteSmoke;
+            DisplayMode.Content = (string)DisplayMode.Content == "Light Mode" ? "Dark Mode" : "Light Mode";
+            
+            // Create new styles for TextBlock, Label, and TextBox
+            Style textBlockStyle = new Style(typeof(TextBlock));
+            textBlockStyle.Setters.Add(new Setter(TextBlock.ForegroundProperty, new SolidColorBrush(color)));
+
+            Style labelStyle = new Style(typeof(Label));
+            labelStyle.Setters.Add(new Setter(Label.ForegroundProperty, new SolidColorBrush(color)));
+
+            // Apply the new styles directly to the controls
+            foreach (var textBlock in FindVisualChildren<TextBlock>(this))
+                textBlock.Style = textBlockStyle;
+
+            foreach (var label in FindVisualChildren<Label>(this))
+                label.Style = labelStyle;
+
+            // Apply the new style to every recipe in the recipes list
+            RecipesBackground = Background.Background == Brushes.WhiteSmoke ? Brushes.LightCyan: Brushes.DarkCyan;
+            foreach (Border recipe in RecipesGrid.Children)
+                recipe.Background = RecipesBackground;
+
+            foreach (TextBlock output in Output.Children)
+                output.Foreground = TextColor;
+
+            foreach (TextBlock ingredient in Ingredients.Children)
+                ingredient.Foreground = TextColor;
         };
+    }
+
+    IEnumerable<T> FindVisualChildren<T>(DependencyObject depObj) where T : DependencyObject
+    {
+        if (depObj != null)
+        {
+            for (int i = 0; i < VisualTreeHelper.GetChildrenCount(depObj); i++)
+            {
+                DependencyObject child = VisualTreeHelper.GetChild(depObj, i);
+                if (child != null && child is T && !IsDescendantOfButton(child)) // Exclude controls that are descendants of buttons
+                    yield return (T)child;
+
+                foreach (T childOfChild in FindVisualChildren<T>(child))
+                    yield return childOfChild;
+            }
+        }
+    }
+    
+    bool IsDescendantOfButton(DependencyObject obj)
+    {
+        DependencyObject parent = VisualTreeHelper.GetParent(obj);
+        while (parent != null)
+        {
+            if (parent is Button)
+                return true;
+            parent = VisualTreeHelper.GetParent(parent);
+        }
+        return false;
+    }
+    
+    public void ButtonUpdate(Button sender)
+    {
+        string tier = sender.Name;
+        Tiers[to_int(tier) - 1] = Tiers[to_int(tier) - 1] is null ? tier: null;
+        sender.Background = sender.Background == Brushes.Chartreuse ? Brushes.LightGray : Brushes.Chartreuse;
+        DisplayRecipes(SearchBar.Text);
     }
     
     public int to_int(string input) => input switch {"I"=>1,"II"=>2,"III"=>3,"IV"=>4,"V"=>5,"VI"=>6,"VII"=>7,"dev"=>8,_=>throw new NotImplementedException()};
-    public string to_tier(int input) => input switch {1=>"I",2=>"II",3=>"III",4=>"IV",5=>"V",6=>"VI",7=>"VII",8=>"dev",_=>throw new NotImplementedException()};
+    public string to_tier(int input) => input switch {1=>"I",2=>"II",3=>"III",4=>"IV",5=>"V",6=>"VI",7=>"VII",_=>"dev"};
 
     public void DisplaySteps(string recipeName)
     {
@@ -206,19 +226,6 @@ public partial class MainWindow : Window
 
         var stepsWindow = new ShowSteps(steps,quantity);
         stepsWindow.Show();
-        //PrintSteps(steps);
-    }
-
-    public void PrintSteps(Stack<List<Recipe>> steps)
-    {
-        while (steps.Count > 0)
-        {
-            var step = steps.Pop();
-            foreach (var recipe in step)
-            {
-                Console.WriteLine(recipe);
-            }
-        }
     }
 
     public void UpdateRecipeIngredients(string q = "")
@@ -242,28 +249,28 @@ public partial class MainWindow : Window
             foreach (var ingredient in recipe.Ingredients!)
             {
                 Ingredients.RowDefinitions.Add(new RowDefinition());
-                Label label = new Label { Content = $"[Tier {to_tier(ingredient.Tier)}] {ingredient.Name}: {ingredient.Quantity * quantity}", HorizontalAlignment = HorizontalAlignment.Center};
-                label.SetValue(Grid.RowProperty, Ingredients.Children.Count);
-                Ingredients.Children.Add(label);
+                TextBlock textblock = new TextBlock { Text = $"[Tier {to_tier(ingredient.Tier)}] {ingredient.Name}: {ingredient.Quantity * quantity}", HorizontalAlignment = HorizontalAlignment.Center, TextWrapping = TextWrapping.Wrap, Foreground = TextColor };
+                textblock.SetValue(Grid.RowProperty, Ingredients.Children.Count);
+                Ingredients.Children.Add(textblock);
             }
     
             Output.Children.Clear();
             foreach (var output in recipe.Output!)
             {
                 Output.RowDefinitions.Add(new RowDefinition());
-                Label label;
+                TextBlock textblock;
                 try
                 {
                     var opt = Recipes[output.Name!];
-                    label = new Label {Content = $"[Tier {to_tier(output.Tier)}] {output.Name}: {(opt.Ingredients!.Count == 1 && opt.Ingredients[0].Name!.Contains("Output") ? "(random amount)" : (output.Quantity * quantity).ToString())}", HorizontalAlignment = HorizontalAlignment.Center };
+                    textblock = new TextBlock { Text = $"[Tier {to_tier(output.Tier)}] {output.Name}: {(opt.Ingredients!.Count == 1 && opt.Ingredients[0].Name!.Contains("Output") ? "(random amount)" : (output.Quantity * quantity).ToString())}", HorizontalAlignment = HorizontalAlignment.Center, TextWrapping = TextWrapping.Wrap, Foreground = TextColor  };
                 }
                 catch
                 {
-                    label = new Label { Content = $"[Tier {to_tier(output.Tier)}] {output.Name}: {output.Quantity * quantity}", HorizontalAlignment = HorizontalAlignment.Center};
+                    textblock = new TextBlock { Text = $"[Tier {to_tier(output.Tier)}] {output.Name}: {output.Quantity * quantity}", HorizontalAlignment = HorizontalAlignment.Center, TextWrapping = TextWrapping.Wrap, Foreground = TextColor  };
                 }
 
-                label.SetValue(Grid.RowProperty, Output.Children.Count);
-                Output.Children.Add(label);
+                textblock.SetValue(Grid.RowProperty, Output.Children.Count);
+                Output.Children.Add(textblock);
             }
         }
         catch
@@ -308,7 +315,7 @@ public partial class MainWindow : Window
                     BorderThickness = new Thickness(1),
                     BorderBrush = Brushes.Transparent,
                     CornerRadius = new CornerRadius(10),
-                    Background = Brushes.LightCyan
+                    Background = RecipesBackground
                 };
             
                 // The Button inside
@@ -344,12 +351,6 @@ public partial class MainWindow : Window
         }
         
     }
-    
-    public void PrintRecipes(string tier = "All")
-    {
-        foreach (Recipe recipe in (tier is "All" ? Recipes.Values : RecipesByTier[to_int(tier)-1].Values))
-            Console.WriteLine(recipe);
-    }
     private void Thumb_DragDelta(object sender, DragDeltaEventArgs e)
     {
         
@@ -364,12 +365,7 @@ public partial class MainWindow : Window
     private void TextBox_PreviewTextInput(object sender, TextCompositionEventArgs e)
     {
         foreach (var ch in e.Text)
-        {
             if (!char.IsDigit(ch))
-            {
                 e.Handled = true; // Mark the event as handled to prevent non-numeric input
-                return;
-            }
-        }
     }
 }

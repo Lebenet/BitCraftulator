@@ -5,23 +5,35 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:BitCrafter"
         mc:Ignorable="d"
-        Title="BitCraftulator" Height="600" Width="1200"
+        Title="BitCraftulator" Height="600" Width="1220"
         WindowStyle="None" 
         AllowsTransparency="True" 
         Background="Transparent"
-        Opacity="0.95">
+        Opacity="0.95"
+        Foreground="Red">
     
-    <Border Background="White" CornerRadius="20">
+    <Window.Resources>
+        <Style TargetType="TextBlock">
+            <Setter Property="Foreground" Value="Black" />
+        </Style>
+        <Style TargetType="Label">
+            <Setter Property="Foreground" Value="Black" />
+        </Style>
+        <Style TargetType="TextBox">
+            <Setter Property="Foreground" Value="Black" />
+        </Style>
+    </Window.Resources>
+    
+    <Border Name="Background" Background="WhiteSmoke" CornerRadius="20">
         <Grid>
             <!-- First Row: Buttons -->
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
-                <RowDefinition Height="2"/>
+                <RowDefinition Height="3"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
             
-            <Label Grid.Row="2" Margin="-60" FontSize="50" FontStyle="Oblique" Content="_________________________________________________________________________________________________________________________"/>
             
             <StackPanel Grid.Row="1" Grid.Column="0" Orientation="Horizontal">
                 <Label Margin="5" Content="Choose a recipe tier: "/>
@@ -33,12 +45,12 @@
                 <Button Name="VI" Margin="5" Content="VI" Width="50" Background="Chartreuse"/>
                 <Button Name="VII" Margin="5" Content="VII" Width="50" Background="Chartreuse"/>
                 <Button Name="dev" Margin="5" Content="dev" Width="50" Background="Chartreuse"/>
-                <TextBox Name="SearchBar" Margin="5" Text="Search for an item (in the works)" Width="270"/>
+                <TextBox Name="SearchBar" Margin="5" Text="Search for an item name" Width="270"/>
             </StackPanel>
 
            <Grid Grid.Row="3">
                <Grid.ColumnDefinitions>
-                   <ColumnDefinition Width="600"/>
+                   <ColumnDefinition Width="620"/>
                    <ColumnDefinition/>
                </Grid.ColumnDefinitions>
                
@@ -127,11 +139,13 @@
            </Grid>
             
             
-            <Border Grid.Row="0" CornerRadius="20" Background="Transparent" Height="20">
-                <Thumb DragDelta="Thumb_DragDelta" Background="Transparent" />
+            <Border Grid.Row="0" CornerRadius="20" Background="Gray" BorderBrush="Transparent" Height="25">
+                <Thumb DragDelta="Thumb_DragDelta" Background="Gray" />
             </Border>
-            <Button Name="Close" Grid.Row="0" HorizontalAlignment="Right" Width="30" Content="X" Background="White"/>
+            <Button Name="Close" Grid.Row="0" HorizontalAlignment="Right" Width="30" Content="X" Background="Red" FontWeight="Bold" FontSize="16"/>
+            <Button Name="DisplayMode" Grid.Row="0" HorizontalAlignment="Right" Width="Auto" Margin="0,0,30,0" Content="Light Mode"/>
             
+            <Border Grid.Row="2" BorderBrush="Black" BorderThickness="5" Margin="0,1,0,-1"/>
             
         </Grid>
     </Border>

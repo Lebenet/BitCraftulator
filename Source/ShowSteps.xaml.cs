@@ -56,7 +56,7 @@ public partial class ShowSteps : Window
             if (elem.Ingredients!.Count == 0)
                 line.Text = $"Get {step[elem] * _quantity} {elem.RecipeName}";
             else
-                line.Text = $"{( elem.Station!.ToLower().Contains("field") ? "Grow" : "Craft" )} {(elem.Ingredients.Count == 1 && elem.Ingredients[0].Name.Contains("Output") ? "(random amount)" : (step[elem] * _quantity) + $" (gives {elem.Output![0].Quantity * _quantity * step[elem]})")} {elem.RecipeName} at {elem.Station} with tool {elem.SkillTool} (required level {elem.SkillLevel} minimum in {elem.SkillName} skill)";
+                line.Text = $"{( elem.Station!.ToLower().Contains("field") ? "Grow" : "Craft" )} {(elem.Ingredients.Count == 1 && elem.Ingredients[0].Name.Contains("Output") ? (step[elem] * _quantity) + " (gives undefined amount)" : (step[elem] * _quantity) + (elem.Output![0].Quantity * _quantity * step[elem] != 1 && elem.Output![0].Quantity * step[elem] * _quantity != step[elem] * _quantity ? $" (gives {elem.Output![0].Quantity * _quantity * step[elem]})" : ""))} {elem.RecipeName} at {elem.Station} with tool {elem.SkillTool} (required level {elem.SkillLevel} minimum in {elem.SkillName} skill)";
             elemsGrid.Children.Add(line);
         }
 
