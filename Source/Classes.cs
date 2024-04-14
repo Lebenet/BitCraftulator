@@ -1,4 +1,5 @@
 using Newtonsoft.Json;
+
 namespace BitCraftulator;
 
 public class Ingredient{

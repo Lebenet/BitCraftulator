@@ -8,145 +8,175 @@
         Title="BitCraftulator" Height="600" Width="1220"
         WindowStyle="None" 
         AllowsTransparency="True" 
-        Background="Transparent"
-        Opacity="0.95"
-        Foreground="Red">
+        Background="Transparent">
     
     <Window.Resources>
         <Style TargetType="TextBlock">
-            <Setter Property="Foreground" Value="Black" />
+            <Setter Property="Foreground" Value="White" />
         </Style>
         <Style TargetType="Label">
-            <Setter Property="Foreground" Value="Black" />
+            <Setter Property="Foreground" Value="White" />
         </Style>
         <Style TargetType="TextBox">
             <Setter Property="Foreground" Value="Black" />
         </Style>
     </Window.Resources>
     
-    <Border Name="Background" Background="WhiteSmoke" CornerRadius="20">
-        <Grid>
-            <!-- First Row: Buttons -->
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="3"/>
-                <RowDefinition Height="*"/>
-            </Grid.RowDefinitions>
-            
-            
-            <StackPanel Grid.Row="1" Grid.Column="0" Orientation="Horizontal">
-                <Label Margin="5" Content="Choose a recipe tier: "/>
-                <Button Name="I" Margin="5" Content="I" Width="50" Background="Chartreuse"/>
-                <Button Name="II" Margin="5" Content="II" Width="50" Background="Chartreuse"/>
-                <Button Name="III" Margin="5" Content="III" Width="50" Background="Chartreuse"/>
-                <Button Name="IV" Margin="5" Content="IV" Width="50" Background="Chartreuse"/>
-                <Button Name="V" Margin="5" Content="V" Width="50" Background="Chartreuse"/>
-                <Button Name="VI" Margin="5" Content="VI" Width="50" Background="Chartreuse"/>
-                <Button Name="VII" Margin="5" Content="VII" Width="50" Background="Chartreuse"/>
-                <Button Name="dev" Margin="5" Content="dev" Width="50" Background="Chartreuse"/>
-                <TextBox Name="SearchBar" Margin="5" Text="Search for an item name" Width="270"/>
-            </StackPanel>
+    <Grid>
+        <!-- First Row: Buttons -->
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="3"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        
+        
+        <StackPanel Grid.Row="1" Grid.Column="0" Orientation="Horizontal" Background="#282D2F">
+            <Label Margin="5" Content="Choose a recipe tier : "/>
+            <Border Name="IBorder" Margin="5" Width="60" CornerRadius="3" Background="#636A74" BorderBrush="White" BorderThickness="1">
+                <Button Name="I" Content="I" BorderBrush="Transparent" Background="Transparent" Foreground="White" FontSize="15"/>
+            </Border>
+            <Border Name="IIBorder" Margin="5" Width="60" CornerRadius="3" Background="#52706A" BorderBrush="White" BorderThickness="1">
+                <Button Name="II" Content="II" BorderBrush="Transparent" Background="Transparent" Foreground="White" FontSize="15"/>
+            </Border>
+            <Border Name="IIIBorder" Margin="5" Width="60" CornerRadius="3" Background="#546E7D" BorderBrush="White" BorderThickness="1">
+                <Button Name="III" Content="III" BorderBrush="Transparent" Background="Transparent" Foreground="White" FontSize="15"/>
+            </Border>
+            <Border Name="IVBorder" Margin="5" Width="60" CornerRadius="3" Background="#666699" BorderBrush="White" BorderThickness="1">
+                <Button Name="IV" Content="IV" BorderBrush="Transparent" Background="Transparent" Foreground="White" FontSize="15"/>
+            </Border>
+            <Border Name="VBorder" Margin="5" Width="60" CornerRadius="3" Background="#7E672A" BorderBrush="White" BorderThickness="1">
+                <Button Name="V" Content="V" BorderBrush="Transparent" Background="Transparent" Foreground="White" FontSize="15"/>
+            </Border>
+            <Border Name="VIBorder" Margin="5" Width="60" CornerRadius="3" Background="#99334C" BorderBrush="White" BorderThickness="1">
+                <Button Name="VI" Content="VI" BorderBrush="Transparent" Background="Transparent" Foreground="White" FontSize="15"/>
+            </Border>
+            <Border Name="VIIBorder" Margin="5" Width="60" CornerRadius="3" Background="#996433" BorderBrush="White" BorderThickness="1">
+                <Button Name="VII" Content="VII" BorderBrush="Transparent" Background="Transparent" Foreground="White" FontSize="15"/>
+            </Border>
+            <Border Name="DEVBorder" Margin="5" Width="60" CornerRadius="3" Background="#419933" BorderBrush="White" BorderThickness="1">
+                <Button Name="DEV" Content="DEV" BorderBrush="Transparent" Background="Transparent" Foreground="White" FontSize="15"/>
+            </Border>
+            <Border Margin="5" Width="300" CornerRadius="3" Background="WhiteSmoke">
+                <TextBox Name="SearchBar" Text="Search for an item name" VerticalContentAlignment="Center" Background="Transparent" BorderBrush="Transparent"/>
+            </Border>
+        </StackPanel>
 
-           <Grid Grid.Row="3">
-               <Grid.ColumnDefinitions>
-                   <ColumnDefinition Width="620"/>
-                   <ColumnDefinition/>
-               </Grid.ColumnDefinitions>
-               
-               <!-- Below Row: Scrollable 2D Table -->
-               <ScrollViewer Margin="2,5,3,-5" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
-                   <Grid Name="RecipesGrid">
-                       <!-- Add columns and rows for the table -->
+       <Grid Grid.Row="3">
+           <Grid.ColumnDefinitions>
+               <ColumnDefinition Width="620"/>
+               <ColumnDefinition/>
+           </Grid.ColumnDefinitions>
+           
+           <!-- Below Row: Scrollable 2D Table -->
+           <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+               <Grid Name="RecipesGrid" Background="#0C0D0E">
+                   <!-- Add columns and rows for the table -->
+                   <Grid.ColumnDefinitions>
+                       <ColumnDefinition Width="120"/>
+                       <ColumnDefinition Width="120"/>
+                       <ColumnDefinition Width="120"/>
+                       <ColumnDefinition Width="120"/>
+                       <ColumnDefinition Width="120"/>
+                   </Grid.ColumnDefinitions>
+                   
+                   <Grid.RowDefinitions>
+                       <RowDefinition Height="Auto"/>
+                       <RowDefinition Height="Auto"/>
+                   </Grid.RowDefinitions>
+                   
+                   <Border Grid.Row="0" Grid.Column="0" Margin="5" BorderBrush="White" CornerRadius="5" Background="Red" BorderThickness="1">
+                       <Button Name="Test" Background="Transparent" BorderBrush="Transparent" MinHeight="30">
+                           <StackPanel>
+                               <Image Source=""/>
+                               <Border Background="White" Margin="-2" Width="110">
+                                   <TextBlock TextAlignment="Center" Text="Test " TextWrapping="Wrap" Foreground="Black" HorizontalAlignment="Center"/>
+                               </Border>
+                           </StackPanel>
+                       </Button>
+                   </Border>
+                   <Border Grid.Row="1" Grid.Column="0" Margin="5" BorderBrush="White" CornerRadius="5" Background="Red" BorderThickness="1">
+                       <Button Name="Test2" Background="Transparent" BorderBrush="Transparent" MinHeight="30">
+                           <StackPanel>
+                               <Image Source=""/>
+                               <Border Background="White" Margin="-2" Width="110">
+                                   <TextBlock TextAlignment="Center" Text="Test " TextWrapping="Wrap" Foreground="Black" HorizontalAlignment="Center"/>
+                               </Border>
+                           </StackPanel>
+                       </Button>
+                   </Border>
+               </Grid>
+           </ScrollViewer>
+           
+           <Border Grid.Column="1" Height="560" BorderBrush="Black" VerticalAlignment="Top" BorderThickness="1,0,0,0" Background="#1D1F21">
+               <Grid>
+                   <Grid.RowDefinitions>
+                       <RowDefinition Height="30"/>
+                       <RowDefinition Height="35"/>
+                       <RowDefinition Height="20"/>
+                       <RowDefinition Height="20"/>
+                       <RowDefinition Height="20"/>
+                       <RowDefinition Height="20"/>
+                       <RowDefinition Height="20"/>
+                       <RowDefinition Height="20"/>
+                       <RowDefinition Height="Auto"/>
+                   </Grid.RowDefinitions>
+                    
+                   <Label Name="RecipeName" Grid.Row="0" Content="Recipe Name" FontSize="20" HorizontalAlignment="Center" VerticalAlignment="Center" VerticalContentAlignment="Center" Height="35" Margin="0,0,-5,0"/>
+                   <Label Grid.Row="1" Content="Quantity:" HorizontalAlignment="Right" FontSize="20" VerticalContentAlignment="Center" Margin="-50,5,100,-5"/>
+                   <TextBox Name="Quantity" Grid.Row="1" HorizontalAlignment="Left" FontSize="20" VerticalContentAlignment="Center" Margin="500,5,-500,-5" PreviewTextInput="TextBox_PreviewTextInput" MinWidth="30"/>
+                   <Label Name="Tier" Grid.Row="1" Content="Tier X" FontSize="20" HorizontalAlignment="Center" VerticalAlignment="Center" VerticalContentAlignment="Center" Height="35"/>
+                   <Button Name="Steps" Grid.Row="2" Content="Click to show crafting steps" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                   <Label Name="SkillName" Grid.Row="3" Content="Skill Name" Padding="5,2,0,0" FontSize="15" Margin="50,20,0,-20" HorizontalAlignment="Left"/>
+                   <Label Name="SkillLevel" Grid.Row="4" Content="Skill Level" Padding="5,2,0,0" FontSize="15" Margin="0,0,50,0" HorizontalAlignment="Right"/>
+                   <Label Name="StationName" Grid.Row="5" Content="Station Name" Padding="5,2,0,0" FontSize="15" Margin="0,-40,0,20" HorizontalAlignment="Center"/>
+                   <Label Name="SkillTool" Grid.Row="6" Content="Skill Tool" Padding="5,2,0,0" FontSize="15" Margin="150,-00,0,00" HorizontalAlignment="Left"/>
+                   <Label Name="Effort" Grid.Row="7" Content="Effort" Padding="5,2,0,0" FontSize="15" Margin="0,-20,175,20" HorizontalAlignment="Right"/>
+                   
+                   <Grid Grid.Row="8" HorizontalAlignment="Center">
                        <Grid.ColumnDefinitions>
-                           <ColumnDefinition Width="120"/>
-                           <ColumnDefinition Width="120"/>
-                           <ColumnDefinition Width="120"/>
-                           <ColumnDefinition Width="120"/>
-                           <ColumnDefinition Width="120"/>
+                           <ColumnDefinition Width="250"/>
+                           <ColumnDefinition Width="50"/>
+                           <ColumnDefinition Width="250"/>
                        </Grid.ColumnDefinitions>
                        
-                       <Border Grid.Row="0" Grid.Column="0" Margin="5" BorderBrush="Transparent" CornerRadius="10" Background="LightCyan">
-                           <Button Name="Test" Margin="5" Background="Transparent" BorderBrush="Transparent">
-                               <StackPanel>
-                                   <Image Source="/Images/download.png"/>
-                                   <TextBlock Text="Test test test test testsdflgndcfkjgbkldfjbkjngbkljdfghjdfkjhnfgkjhnb" TextWrapping="Wrap"/>
-                               </StackPanel>
-                           </Button>
-                       </Border>
-                   </Grid>
-               </ScrollViewer>
-               
-               <Border Grid.Column="1" Height="560" BorderBrush="Black" VerticalAlignment="Top" BorderThickness="3,0,0,0" Margin="0,1,0,0">
-                   <Grid>
-                       <Grid.RowDefinitions>
-                           <RowDefinition Height="30"/>
-                           <RowDefinition Height="35"/>
-                           <RowDefinition Height="20"/>
-                           <RowDefinition Height="20"/>
-                           <RowDefinition Height="20"/>
-                           <RowDefinition Height="20"/>
-                           <RowDefinition Height="20"/>
-                           <RowDefinition Height="20"/>
-                           <RowDefinition Height="Auto"/>
-                       </Grid.RowDefinitions>
-                        
-                       <Label Name="RecipeName" Grid.Row="0" Content="Recipe Name" FontSize="20" HorizontalAlignment="Center" VerticalAlignment="Center" VerticalContentAlignment="Center" Height="35" Margin="0,0,-5,0"/>
-                       <Label Grid.Row="1" Content="Quantity:" HorizontalAlignment="Right" FontSize="20" VerticalContentAlignment="Center" Margin="-50,5,100,-5"/>
-                       <TextBox Name="Quantity" Grid.Row="1" HorizontalAlignment="Left" FontSize="20" VerticalContentAlignment="Center" Margin="500,5,-500,-5" PreviewTextInput="TextBox_PreviewTextInput" MinWidth="30"/>
-                       <Label Name="Tier" Grid.Row="1" Content="Tier X" FontSize="20" HorizontalAlignment="Center" VerticalAlignment="Center" VerticalContentAlignment="Center" Height="35"/>
-                       <Button Name="Steps" Grid.Row="2" Content="Click to show crafting steps" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                       <Label Name="SkillName" Grid.Row="3" Content="Skill Name" Padding="5,2,0,0" FontSize="15" Margin="50,20,0,-20" HorizontalAlignment="Left"/>
-                       <Label Name="SkillLevel" Grid.Row="4" Content="Skill Level" Padding="5,2,0,0" FontSize="15" Margin="0,0,50,0" HorizontalAlignment="Right"/>
-                       <Label Name="StationName" Grid.Row="5" Content="Station Name" Padding="5,2,0,0" FontSize="15" Margin="0,-40,0,20" HorizontalAlignment="Center"/>
-                       <Label Name="SkillTool" Grid.Row="6" Content="Skill Tool" Padding="5,2,0,0" FontSize="15" Margin="150,-00,0,00" HorizontalAlignment="Left"/>
-                       <Label Name="Effort" Grid.Row="7" Content="Effort" Padding="5,2,0,0" FontSize="15" Margin="0,-20,175,20" HorizontalAlignment="Right"/>
+                       <StackPanel Grid.Column="0" Margin="-20,0,20,0">
+                           <Label Content="Input" FontSize="20" HorizontalContentAlignment="Center" HorizontalAlignment="Center"/>
+                           <Border Margin="2,0,0,0" BorderThickness="3" BorderBrush="Black" Background="#555352">
+                               <ScrollViewer Margin="3,3,4,0" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+                                   <Grid Name="Ingredients">
+                                       
+                                   </Grid>
+                               </ScrollViewer>
+                           </Border>
+                       </StackPanel>
                        
-                       <Grid Grid.Row="8" HorizontalAlignment="Center">
-                           <Grid.ColumnDefinitions>
-                               <ColumnDefinition Width="250"/>
-                               <ColumnDefinition Width="50"/>
-                               <ColumnDefinition Width="250"/>
-                           </Grid.ColumnDefinitions>
-                           
-                           <StackPanel Grid.Column="0" Margin="-20,0,20,0">
-                               <Label Content="Input" FontSize="20" HorizontalContentAlignment="Center" HorizontalAlignment="Center"/>
-                               <Border Margin="2,0,0,0" BorderThickness="3" BorderBrush="Black">
-                                   <ScrollViewer Margin="3,3,4,0" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
-                                       <Grid Name="Ingredients">
-                                           
-                                       </Grid>
-                                   </ScrollViewer>
-                               </Border>
-                           </StackPanel>
-                           
-                           <Image Grid.Column="1" Source="Images/App/Arrow.png" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                           
-                           <StackPanel Grid.Column="2" Margin="20,0,-20,0">
-                               <Label Content="Output" FontSize="20" HorizontalContentAlignment="Center" HorizontalAlignment="Center"/>
-                               <Border Margin="0,0,-2,0" BorderThickness="3" BorderBrush="Black" >
-                                   <ScrollViewer Margin="3,3,4,0" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
-                                       <Grid Name="Output">
-                                           
-                                       </Grid>
-                                   </ScrollViewer>
-                               </Border>
-                           </StackPanel>
-                       </Grid>
+                       <Image Grid.Column="1" Source="Images/App/Arrow.png" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                        
+                       <StackPanel Grid.Column="2" Margin="20,0,-20,0">
+                           <Label Content="Output" FontSize="20" HorizontalContentAlignment="Center" HorizontalAlignment="Center"/>
+                           <Border Margin="0,0,-2,0" BorderThickness="3" BorderBrush="Black" Background="#555352">
+                               <ScrollViewer Margin="3,3,4,0" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+                                   <Grid Name="Output">
+                                       
+                                   </Grid>
+                               </ScrollViewer>
+                           </Border>
+                       </StackPanel>
                    </Grid>
-               </Border>
-           </Grid>
-            
-            
-            <Border Grid.Row="0" CornerRadius="20" Background="Gray" BorderBrush="Transparent" Height="25">
-                <Thumb DragDelta="Thumb_DragDelta" Background="Gray" />
-            </Border>
-            <Button Name="Close" Grid.Row="0" HorizontalAlignment="Right" Width="30" Content="X" Background="Red" FontWeight="Bold" FontSize="16"/>
-            <Button Name="DisplayMode" Grid.Row="0" HorizontalAlignment="Right" Width="Auto" Margin="0,0,30,0" Content="Light Mode"/>
-            
-            <Border Grid.Row="2" BorderBrush="Black" BorderThickness="5" Margin="0,1,0,-1"/>
-            
-        </Grid>
-    </Border>
+                   
+               </Grid>
+           </Border>
+       </Grid>
+        
+        
+        <Border Grid.Row="0" CornerRadius="20" Background="Gray" BorderBrush="Transparent" Height="25">
+            <Thumb DragDelta="Thumb_DragDelta" Background="Gray" />
+        </Border>
+        <Button Name="Close" Grid.Row="0" HorizontalAlignment="Right" Width="30" Content="X" Background="Red" FontWeight="Bold" FontSize="16"/>
+        <Button Name="DisplayMode" Grid.Row="0" HorizontalAlignment="Right" Width="Auto" Margin="0,0,30,0" Content="Dark Mode"/>
+        
+        
+    </Grid>
 </Window>

@@ -14,8 +14,53 @@ namespace BitCraftulator;
 /// </summary>
 public partial class MainWindow : Window
 {
-    private Brush RecipesBackground;
-    private Brush TextColor;
+    private Dictionary<int, Brush> RecipesBackground => new Dictionary<int, Brush>
+    {
+        {1, (SolidColorBrush)(new BrushConverter().ConvertFrom("#636A74"))},
+        {2, (SolidColorBrush)(new BrushConverter().ConvertFrom("#52706A"))},
+        {3, (SolidColorBrush)(new BrushConverter().ConvertFrom("#546E7D"))},
+        {4, (SolidColorBrush)(new BrushConverter().ConvertFrom("#666699"))},
+        {5, (SolidColorBrush)(new BrushConverter().ConvertFrom("#7E672A"))},
+        {6, (SolidColorBrush)(new BrushConverter().ConvertFrom("#99334C"))},
+        {7, (SolidColorBrush)(new BrushConverter().ConvertFrom("#996433"))},
+        {8, (SolidColorBrush)(new BrushConverter().ConvertFrom("#419933"))},
+    };
+
+    private Dictionary<int, Brush> TextBackground => new Dictionary<int, Brush>
+    {
+        {1, (SolidColorBrush)(new BrushConverter().ConvertFrom("#B0B5BA"))},
+        {2, (SolidColorBrush)(new BrushConverter().ConvertFrom("#7B857D"))},
+        {3, (SolidColorBrush)(new BrushConverter().ConvertFrom("#9AB7BE"))},
+        {4, (SolidColorBrush)(new BrushConverter().ConvertFrom("#8384B3"))},
+        {5, (SolidColorBrush)(new BrushConverter().ConvertFrom("#C5A263"))},
+        {6, (SolidColorBrush)(new BrushConverter().ConvertFrom("#CC7C81"))},
+        {7, (SolidColorBrush)(new BrushConverter().ConvertFrom("#CC8378"))},
+        {8, (SolidColorBrush)(new BrushConverter().ConvertFrom("#80C666"))},
+    };
+    
+    Dictionary<int, Brush> TextColor => new Dictionary<int, Brush>
+    {
+        { 1, MixColors("#000000", 0.8, "#454A45", 0.2) },
+        { 2, MixColors("#000000", 0.8, "#848A82", 0.2) },
+        { 3, MixColors("#000000", 0.8, "#654842", 0.2) },
+        { 4, MixColors("#000000", 0.8, "#7C7D8C", 0.2) },
+        { 5, MixColors("#000000", 0.8, "#3A5D9C", 0.2) },
+        { 6, MixColors("#000000", 0.8, "#3373BE", 0.2) },
+        { 7, MixColors("#000000", 0.8, "#338C8C", 0.2) },
+        { 8, MixColors("#000000", 0.8, "#7F3999", 0.2) }
+    };
+
+    Brush MixColors(string colorHex, double colorRatio, string reverseHex, double reverseRatio)
+    {
+        Color color = (Color)ColorConverter.ConvertFromString(colorHex);
+        Color reverseColor = (Color)ColorConverter.ConvertFromString(reverseHex);
+    
+        byte r = (byte)(color.R * colorRatio + reverseColor.R * reverseRatio);
+        byte g = (byte)(color.G * colorRatio + reverseColor.G * reverseRatio);
+        byte b = (byte)(color.B * colorRatio + reverseColor.B * reverseRatio);
+    
+        return new SolidColorBrush(Color.FromRgb(r, g, b));
+    }
     
     private Dictionary<string, Recipe>[] RecipesByTier { get; set; }
     private Dictionary<string, Recipe> Recipes { get; set; }
@@ -28,10 +73,8 @@ public partial class MainWindow : Window
     public MainWindow()
     {
         InitializeComponent();
-        RecipesBackground = Brushes.LightCyan;
-        TextColor = Brushes.Black;
 
-        Tiers = new[] { "I", "II", "III", "IV", "V", "VI", "VII", "dev" };
+        Tiers = new[] { "I", "II", "III", "IV", "V", "VI", "VII", "DEV" };
         int numTiers = Tiers.Length;
         
         // init the recipes dictionaries
@@ -48,18 +91,45 @@ public partial class MainWindow : Window
         {
             // fix issue with High Quality ( not really cos there's random but eh)
             foreach (var ingredient in recipe.Ingredients!)
+            {
                 if (ingredient.Name!.Contains("High Quality"))
+                {
                     ingredient.Name = ingredient.Name!.Replace("High Quality", "").Trim() + " Output";
+                    recipe.Output![0].Quantity = 1;
+                }
+            }
                     
             if (recipe.Ingredients!.Count > 0 || recipe.Tier-1 >= 7)
             {
-                RecipesByTier[recipe.Tier-1 < 7 ? recipe.Tier-1 : 7][recipe.RecipeName!] = recipe;
-                Recipes[recipe.RecipeName!] = recipe;
+                if (!Recipes.ContainsKey(recipe.RecipeName!))
+                {
+                    RecipesByTier[recipe.Tier-1 < 7 ? recipe.Tier-1 : 7][recipe.RecipeName!] = recipe;
+                    Recipes[recipe.RecipeName!] = recipe;
+                }
+                else
+                {
+                    string n = recipe.RecipeName! + "\u200e";
+                    while (Recipes.ContainsKey(n))
+                        n += "\u200e";
+                    RecipesByTier[recipe.Tier-1 < 7 ? recipe.Tier-1 : 7][n] = recipe;
+                    Recipes[n] = recipe;
+                }
             }
             else
             {
-                ItemsByTier[recipe.Tier-1][recipe.RecipeName!] = recipe;
-                Items[recipe.RecipeName!] = recipe;
+                if (!Items.ContainsKey(recipe.RecipeName!))
+                {
+                    ItemsByTier[recipe.Tier-1][recipe.RecipeName!] = recipe;
+                    Items[recipe.RecipeName!] = recipe;
+                }
+                else
+                {
+                    string n = recipe.RecipeName! + "\u200e";
+                    while (Recipes.ContainsKey(n))
+                        n += "\u200e";
+                    ItemsByTier[recipe.Tier-1][n] = recipe;
+                    Items[n] = recipe;
+                }
             }
         }
 
@@ -77,7 +147,7 @@ public partial class MainWindow : Window
         V.Click += (sender, e) => ButtonUpdate((Button)sender);
         VI.Click += (sender, e) => ButtonUpdate((Button)sender);
         VII.Click += (sender, e) => ButtonUpdate((Button)sender);
-        dev.Click += (sender, e) => ButtonUpdate((Button)sender);
+        DEV.Click += (sender, e) => ButtonUpdate((Button)sender);
         SearchBar.PreviewMouseDown += (sender, e) =>
         {
             if (!SearchBar.IsFocused) SearchBar.Text = "";
@@ -89,13 +159,13 @@ public partial class MainWindow : Window
         {
             if (!Quantity.IsFocused) Quantity.Text = "";
         };
-        SearchBar.KeyDown += (sender, e) =>DisplayRecipes(SearchBar.Text.ToLower());
+        SearchBar.TextChanged += (sender, e) => DisplayRecipes(SearchBar.Text.ToLower());
         DisplayMode.Click += (sender, e) =>
         {
             // Define the color and update the button's content
-            var color = (string)DisplayMode.Content == "Light Mode" ? Colors.White : Colors.Black;
+            /*var color = (string)DisplayMode.Content == "Light Mode" ? Colors.White : Colors.Black;
             TextColor = (string)DisplayMode.Content == "Light Mode" ? Brushes.White : Brushes.Black;
-            Background.Background = Background.Background == Brushes.WhiteSmoke ? Brushes.DimGray : Brushes.WhiteSmoke;
+            //Background.Background = Background.Background == Brushes.WhiteSmoke ? Brushes.DimGray : Brushes.WhiteSmoke;
             DisplayMode.Content = (string)DisplayMode.Content == "Light Mode" ? "Dark Mode" : "Light Mode";
             
             // Create new styles for TextBlock, Label, and TextBox
@@ -113,15 +183,11 @@ public partial class MainWindow : Window
                 label.Style = labelStyle;
 
             // Apply the new style to every recipe in the recipes list
-            RecipesBackground = Background.Background == Brushes.WhiteSmoke ? Brushes.LightCyan: Brushes.DarkCyan;
-            foreach (Border recipe in RecipesGrid.Children)
-                recipe.Background = RecipesBackground;
-
             foreach (TextBlock output in Output.Children)
                 output.Foreground = TextColor;
 
             foreach (TextBlock ingredient in Ingredients.Children)
-                ingredient.Foreground = TextColor;
+                ingredient.Foreground = TextColor;*/
         };
     }
 
@@ -155,35 +221,36 @@ public partial class MainWindow : Window
     
     public void ButtonUpdate(Button sender)
     {
+        var parent = (Border)FindName(sender.Name + "Border")!;
         string tier = sender.Name;
+        Brush background = RecipesBackground[to_int(tier)];
         Tiers[to_int(tier) - 1] = Tiers[to_int(tier) - 1] is null ? tier: null;
-        sender.Background = sender.Background == Brushes.Chartreuse ? Brushes.LightGray : Brushes.Chartreuse;
+        parent.Background = parent.Background.ToString() == background.ToString() ? Brushes.LightGray : background;
         DisplayRecipes(SearchBar.Text);
     }
     
-    public int to_int(string input) => input switch {"I"=>1,"II"=>2,"III"=>3,"IV"=>4,"V"=>5,"VI"=>6,"VII"=>7,"dev"=>8,_=>throw new NotImplementedException()};
-    public string to_tier(int input) => input switch {1=>"I",2=>"II",3=>"III",4=>"IV",5=>"V",6=>"VI",7=>"VII",_=>"dev"};
+    public int to_int(string input) => input switch {"I"=>1,"II"=>2,"III"=>3,"IV"=>4,"V"=>5,"VI"=>6,"VII"=>7,"DEV"=>8,_=>throw new NotImplementedException()};
+    public string to_tier(int input) => input switch {1=>"I",2=>"II",3=>"III",4=>"IV",5=>"V",6=>"VI",7=>"VII",_=>"DEV"};
 
     public void DisplaySteps(string recipeName)
     {
         if (recipeName is "Recipe Name")
             return;
         
-        Stack<List<Recipe>> steps = new();
+        Stack<List<(Recipe, int)>> steps = new();
         Recipe recipe = Recipes[recipeName];
         Queue<Recipe?> q = new Queue<Recipe?>();
 
         int quantity = Quantity.Text == "" ? 1 : int.Parse(Quantity.Text);
         
-        steps.Push(new List<Recipe> {recipe});
+        steps.Push(new List<(Recipe, int)> {(recipe,1)});
         q.Enqueue(recipe);
         q.Enqueue(null);
 
-        List<Recipe> build = new();
+        List<(Recipe, int)> build = new();
         while (q.Count > 0)
         {
             Recipe? curr = q.Dequeue();
-            
             if (curr is null)
             {
                 if (build.Count > 0)
@@ -195,6 +262,7 @@ public partial class MainWindow : Window
             
             else
             {
+                int div = curr.Output!.Count > 0 ? curr.Output![0].Quantity : 1;
                 foreach (var ingredient in curr.Ingredients!)
                 {
                     if (ingredient.Name == curr.RecipeName)
@@ -202,11 +270,12 @@ public partial class MainWindow : Window
                     
                     if (ingredient.Name!.ToLower().Contains("seed"))
                     {
-                        build.Add(Items[ingredient.Name!]);
+                        build.Add((Items[ingredient.Name!], curr.Output![0].Quantity));
                         continue;
                     }
-                    
-                    for (var i = 0; i < Math.Clamp(ingredient.Quantity / curr.Output![0].Quantity, 1, ingredient.Quantity); i++)
+
+                    int t;
+                    for (var i = 0; i < ((t = (ingredient.Quantity) / curr.Output![0].Quantity) > 0 ? t : 1); i++)
                     {
                         Recipe ingr;
                         try
@@ -217,14 +286,15 @@ public partial class MainWindow : Window
                         {
                             ingr = Items[ingredient.Name!];
                         }
-                        build.Add(ingr);
+                        build.Add((ingr, div));
                         q.Enqueue(ingr);
                     }
                 }
             }
+
         }
 
-        var stepsWindow = new ShowSteps(steps,quantity);
+        var stepsWindow = new ShowSteps(steps, quantity);
         stepsWindow.Show();
     }
 
@@ -248,8 +318,8 @@ public partial class MainWindow : Window
             Ingredients.Children.Clear();
             foreach (var ingredient in recipe.Ingredients!)
             {
-                Ingredients.RowDefinitions.Add(new RowDefinition());
-                TextBlock textblock = new TextBlock { Text = $"[Tier {to_tier(ingredient.Tier)}] {ingredient.Name}: {ingredient.Quantity * quantity}", HorizontalAlignment = HorizontalAlignment.Center, TextWrapping = TextWrapping.Wrap, Foreground = TextColor };
+                Ingredients.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
+                TextBlock textblock = new TextBlock { Text = $"[Tier {to_tier(ingredient.Tier)}] {ingredient.Name}: {ingredient.Quantity * quantity}", HorizontalAlignment = HorizontalAlignment.Center, TextWrapping = TextWrapping.Wrap, Foreground = Brushes.WhiteSmoke };
                 textblock.SetValue(Grid.RowProperty, Ingredients.Children.Count);
                 Ingredients.Children.Add(textblock);
             }
@@ -262,11 +332,11 @@ public partial class MainWindow : Window
                 try
                 {
                     var opt = Recipes[output.Name!];
-                    textblock = new TextBlock { Text = $"[Tier {to_tier(output.Tier)}] {output.Name}: {(opt.Ingredients!.Count == 1 && opt.Ingredients[0].Name!.Contains("Output") ? "(random amount)" : (output.Quantity * quantity).ToString())}", HorizontalAlignment = HorizontalAlignment.Center, TextWrapping = TextWrapping.Wrap, Foreground = TextColor  };
+                    textblock = new TextBlock { Text = $"[Tier {to_tier(output.Tier)}] {output.Name}: {(opt.Ingredients!.Count == 1 && opt.Ingredients[0].Name!.Contains("Output") ? "(random amount)" : (output.Quantity * quantity).ToString())}", HorizontalAlignment = HorizontalAlignment.Center, TextWrapping = TextWrapping.Wrap, Foreground = Brushes.WhiteSmoke };
                 }
                 catch
                 {
-                    textblock = new TextBlock { Text = $"[Tier {to_tier(output.Tier)}] {output.Name}: {output.Quantity * quantity}", HorizontalAlignment = HorizontalAlignment.Center, TextWrapping = TextWrapping.Wrap, Foreground = TextColor  };
+                    textblock = new TextBlock { Text = $"[Tier {to_tier(output.Tier)}] {output.Name}: {output.Quantity * quantity}", HorizontalAlignment = HorizontalAlignment.Center, TextWrapping = TextWrapping.Wrap, Foreground = Brushes.WhiteSmoke  };
                 }
 
                 textblock.SetValue(Grid.RowProperty, Output.Children.Count);
@@ -296,7 +366,8 @@ public partial class MainWindow : Window
     {
         RecipesGrid.Children.Clear();
 
-        
+        if (search == "Search for an item name")
+            search = "";
         
         foreach (var tier in Tiers)
         {
@@ -313,18 +384,18 @@ public partial class MainWindow : Window
                 {
                     Margin = new Thickness(5),
                     BorderThickness = new Thickness(1),
-                    BorderBrush = Brushes.Transparent,
-                    CornerRadius = new CornerRadius(10),
-                    Background = RecipesBackground
+                    BorderBrush = Brushes.White,
+                    CornerRadius = new CornerRadius(5),
+                    Background = RecipesBackground[recipe.Tier is >= 1 and <= 8 ? recipe.Tier : recipe.Tier > 8 ? 8 : 1]
                 };
             
                 // The Button inside
                 var button = new Button
                 {
-                    Name = "_" + recipeName.Replace(" ", "_").Replace("'","__").Replace(":","999"),
-                    Margin = new Thickness(5), 
+                    //Name = "_" + recipeName.Replace(" ", "_").Replace("'","__").Replace(":","999"),
                     Background = Brushes.Transparent, 
-                    BorderBrush = Brushes.Transparent
+                    BorderBrush = Brushes.Transparent,
+                    MinHeight = 30
                 };
             
                 // The StackPanel inside the Button
@@ -332,11 +403,14 @@ public partial class MainWindow : Window
             
                 // The Image and Label inside the StackPanel
                 var image = new Image {Source = new BitmapImage {UriSource = new Uri("pack://application:,,,/Images/download.png")}};
-                var textBlock = new TextBlock {Text = recipeName, TextWrapping = TextWrapping.Wrap};
-            
+                var border = new Border { Background = TextBackground[recipe.Tier is >= 1 and <= 8 ? recipe.Tier : recipe.Tier > 8 ? 8 : 1], Margin = new Thickness(-2), Width = 110, VerticalAlignment = VerticalAlignment.Bottom };
+                var textBlock = new TextBlock { TextAlignment = TextAlignment.Center, Text = recipeName, TextWrapping = TextWrapping.Wrap, Foreground =  TextColor[to_int(to_tier(recipe.Tier))]};
+                border.Child = textBlock;
+                
+                
                 // Construct the final element to add
                 stackPanel.Children.Add(image);
-                stackPanel.Children.Add(textBlock);
+                stackPanel.Children.Add(border);
                 button.Content = stackPanel;
                 elemToAdd.Child = button;
             
@@ -344,8 +418,7 @@ public partial class MainWindow : Window
                 elemToAdd.SetValue(Grid.RowProperty, i/5);
             
                 RecipesGrid.Children.Add(elemToAdd);
-                button.Click += (sender, e) => DisplayRecipeIngredients(((Button)sender).Name.Replace("__","'").Replace("_"," ").Replace("999",":").Trim());
-            
+                button.Click += (sender, e) => DisplayRecipeIngredients(textBlock.Text);
                 i++;
             }
         }
@@ -354,7 +427,7 @@ public partial class MainWindow : Window
     private void Thumb_DragDelta(object sender, DragDeltaEventArgs e)
     {
         
-        Window window = Window.GetWindow((DependencyObject)sender);
+        Window window = GetWindow((DependencyObject)sender);
         if (window != null)
         {
             window.Left += e.HorizontalChange;
