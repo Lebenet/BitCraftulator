@@ -61,7 +61,8 @@ public partial class MainWindow : Window
     
         return new SolidColorBrush(Color.FromRgb(r, g, b));
     }
-    
+
+    private Dictionary<string, int> rawMaterials;
     private Dictionary<string, Recipe>[] RecipesByTier { get; set; }
     private Dictionary<string, Recipe> Recipes { get; set; }
     
@@ -90,9 +91,11 @@ public partial class MainWindow : Window
         foreach (var recipe in recipes!)
         {
             // fix issue with High Quality ( not really cos there's random but eh)
-            foreach (var ingredient in recipe.Ingredients!)
+            if (recipe.Ingredients!.Count == 1)
             {
-                if (ingredient.Name!.Contains("High Quality"))
+                var output = recipe.Output![0];
+                var ingredient = recipe.Ingredients![0];
+                if (ingredient.Name!.Contains("High Quality") && !output.Name!.Contains("Supplies") && !output.Name.Contains("Source"))
                 {
                     ingredient.Name = ingredient.Name!.Replace("High Quality", "").Trim() + " Output";
                     recipe.Output![0].Quantity = 1;
@@ -232,121 +235,131 @@ public partial class MainWindow : Window
     public int to_int(string input) => input switch {"I"=>1,"II"=>2,"III"=>3,"IV"=>4,"V"=>5,"VI"=>6,"VII"=>7,"DEV"=>8,_=>throw new NotImplementedException()};
     public string to_tier(int input) => input switch {1=>"I",2=>"II",3=>"III",4=>"IV",5=>"V",6=>"VI",7=>"VII",_=>"DEV"};
 
-    public void DisplaySteps(string recipeName)
+     public void DisplaySteps(string recipeName)
     {
         if (recipeName is "Recipe Name")
             return;
-        
-        Stack<List<(Recipe, int)>> steps = new();
-        Recipe recipe = Recipes[recipeName];
-        Queue<Recipe?> q = new Queue<Recipe?>();
 
-        int quantity = Quantity.Text == "" ? 1 : int.Parse(Quantity.Text);
-        
-        steps.Push(new List<(Recipe, int)> {(recipe,1)});
-        q.Enqueue(recipe);
-        q.Enqueue(null);
+        int target = string.IsNullOrEmpty(Quantity.Text) ? 1 : int.Parse(Quantity.Text);
 
-        List<(Recipe, int)> build = new();
-        while (q.Count > 0)
+        DependencyGraph graph = new DependencyGraph(Recipes.Values.ToList());
+        graph.Add(recipeName);
+
+        Dictionary<string, int> quantities = new();
+        Stack<Tuple<Recipe, int>> steps = new();
+
+        quantities[recipeName] = target;
+
+        string? next = graph.Take();
+        while (next != null)
         {
-            Recipe? curr = q.Dequeue();
-            if (curr is null)
+            Recipe? recipe = graph.GetRecipe(next);
+            if (recipe != null)
             {
-                if (build.Count > 0)
-                    steps.Push(build);
-                build = new();
-                if (q.Count > 0)
-                    q.Enqueue(null);
-            }
-            
-            else
-            {
-                int div = curr.Output!.Count > 0 ? curr.Output![0].Quantity : 1;
-                foreach (var ingredient in curr.Ingredients!)
+                if (recipe.Output != null)
                 {
-                    if (ingredient.Name == curr.RecipeName)
-                        continue;
-                    
-                    if (ingredient.Name!.ToLower().Contains("seed"))
-                    {
-                        build.Add((Items[ingredient.Name!], curr.Output![0].Quantity));
-                        continue;
-                    }
+                    int quantity = quantities[next];
+                    int count = (int)Math.Ceiling((double)quantity / recipe.Output.First(e => e.Name == next).Quantity);
 
-                    int t;
-                    for (var i = 0; i < ((t = (ingredient.Quantity) / curr.Output![0].Quantity) > 0 ? t : 1); i++)
+                    steps.Push(new Tuple<Recipe, int>(recipe, count));
+
+                    if (recipe.Ingredients != null)
                     {
-                        Recipe ingr;
-                        try
+                        foreach (Ingredient ingredient in recipe.Ingredients)
                         {
-                            ingr = Recipes[ingredient.Name!];
+                            quantities.TryGetValue(ingredient.Name!, out var newQuantity);
+                            newQuantity += count * ingredient.Quantity;
+                            quantities[ingredient.Name!] = newQuantity;
                         }
-                        catch (KeyNotFoundException)
-                        {
-                            ingr = Items[ingredient.Name!];
-                        }
-                        build.Add((ingr, div));
-                        q.Enqueue(ingr);
                     }
                 }
             }
 
+            next = graph.Take();
         }
 
-        var stepsWindow = new ShowSteps(steps, quantity);
+        foreach ((string name, int quantity) in rawMaterials)
+            steps.Push(new Tuple<Recipe, int>(Items[name], quantity));
+        
+        var stepsWindow = new ShowSteps(steps);
         stepsWindow.Show();
     }
 
     public void UpdateRecipeIngredients(string q = "")
     {
-        try
+        var recipeName = RecipeName.Content.ToString()!;
+        if (recipeName is "Recipe Name")
+            return;
+
+        int target = string.IsNullOrEmpty(Quantity.Text) ? 1 : int.Parse(Quantity.Text);
+
+        DependencyGraph graph = new DependencyGraph(Recipes.Values.ToList());
+        graph.Add(recipeName);
+
+        Dictionary<string, int> quantities = new();
+        Stack<Tuple<Recipe, int>> steps = new();
+        rawMaterials = new();
+
+        var outputEffort = 0;
+        var totalEffort = 0;
+        var outputCount = 0;
+
+        quantities[recipeName] = target;
+
+        string? next = graph.Take();
+        while (next != null)
         {
-            int quantity = q is "" ? 1 : int.Parse(q);
-            Recipe recipe;
-            try
+            Recipe? recipe = graph.GetRecipe(next);
+            if (recipe == null)
             {
-                recipe = Recipes[RecipeName.Content.ToString()!];
+                rawMaterials[next] = quantities[next];
             }
-            catch (KeyNotFoundException)
+            else
             {
-                recipe = Items[RecipeName.Content.ToString()!];
+                if (recipe.Output != null)
+                {
+                    int quantity = quantities[next];
+                    int count = (int)Math.Ceiling((double)quantity / recipe.Output.First(e => e.Name == next).Quantity);
+                    totalEffort += count * recipe.Effort;
+                    if (recipe.Output.Any(e => e.Name == recipeName))
+                    {
+                        outputEffort += count * recipe.Effort;
+                        outputCount += count * recipe.Output.First(e => e.Name == recipeName).Quantity;
+                    }
+
+                    steps.Push(new Tuple<Recipe, int>(recipe, count));
+
+                    if (recipe.Ingredients != null)
+                    {
+                        foreach (Ingredient ingredient in recipe.Ingredients)
+                        {
+                            quantities.TryGetValue(ingredient.Name!, out var newQuantity);
+                            newQuantity += count * ingredient.Quantity;
+                            quantities[ingredient.Name!] = newQuantity;
+                        }
+                    }
+                }
             }
 
-            Effort.Content = $"Effort: {recipe.Effort * quantity}";
-            
-            Ingredients.Children.Clear();
-            foreach (var ingredient in recipe.Ingredients!)
-            {
-                Ingredients.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
-                TextBlock textblock = new TextBlock { Text = $"[Tier {to_tier(ingredient.Tier)}] {ingredient.Name}: {ingredient.Quantity * quantity}", HorizontalAlignment = HorizontalAlignment.Center, TextWrapping = TextWrapping.Wrap, Foreground = Brushes.WhiteSmoke };
-                textblock.SetValue(Grid.RowProperty, Ingredients.Children.Count);
-                Ingredients.Children.Add(textblock);
-            }
-    
-            Output.Children.Clear();
-            foreach (var output in recipe.Output!)
-            {
-                Output.RowDefinitions.Add(new RowDefinition());
-                TextBlock textblock;
-                try
-                {
-                    var opt = Recipes[output.Name!];
-                    textblock = new TextBlock { Text = $"[Tier {to_tier(output.Tier)}] {output.Name}: {(opt.Ingredients!.Count == 1 && opt.Ingredients[0].Name!.Contains("Output") ? "(random amount)" : (output.Quantity * quantity).ToString())}", HorizontalAlignment = HorizontalAlignment.Center, TextWrapping = TextWrapping.Wrap, Foreground = Brushes.WhiteSmoke };
-                }
-                catch
-                {
-                    textblock = new TextBlock { Text = $"[Tier {to_tier(output.Tier)}] {output.Name}: {output.Quantity * quantity}", HorizontalAlignment = HorizontalAlignment.Center, TextWrapping = TextWrapping.Wrap, Foreground = Brushes.WhiteSmoke  };
-                }
+            next = graph.Take();
+        }
 
-                textblock.SetValue(Grid.RowProperty, Output.Children.Count);
-                Output.Children.Add(textblock);
-            }
-        }
-        catch
+        Effort.Content = $"Effort: {outputEffort} ({totalEffort} total)";
+        
+        Ingredients.Children.Clear();
+        foreach (var ingredient in rawMaterials.Keys)
         {
-            
+            Ingredients.RowDefinitions.Add(new RowDefinition());
+            TextBlock textblock = new TextBlock { Text = $"{ingredient}: {rawMaterials[ingredient]}", HorizontalAlignment = HorizontalAlignment.Center, TextWrapping = TextWrapping.Wrap, Foreground = Brushes.White };
+            textblock.SetValue(Grid.RowProperty, Ingredients.Children.Count);
+            Ingredients.Children.Add(textblock);
         }
+        
+        Output.Children.Clear();
+        Output.RowDefinitions.Add(new RowDefinition());
+        TextBlock outputBlock = new TextBlock { Text = $"{recipeName}: {outputCount}", HorizontalAlignment = HorizontalAlignment.Center, TextWrapping = TextWrapping.Wrap, Foreground = Brushes.White  };
+        outputBlock.SetValue(Grid.RowProperty, Output.Children.Count);
+        Output.Children.Add(outputBlock);
     }
     
     public void DisplayRecipeIngredients(string recipeName)
@@ -402,7 +415,7 @@ public partial class MainWindow : Window
                 var stackPanel = new StackPanel();
             
                 // The Image and Label inside the StackPanel
-                var image = new Image {Source = new BitmapImage {UriSource = new Uri("pack://application:,,,/Images/download.png")}};
+                var image = new Image {Source = new BitmapImage {UriSource = new Uri("pack://application:,,,/Images/download.png")}}; // to change
                 var border = new Border { Background = TextBackground[recipe.Tier is >= 1 and <= 8 ? recipe.Tier : recipe.Tier > 8 ? 8 : 1], Margin = new Thickness(-2), Width = 110, VerticalAlignment = VerticalAlignment.Bottom };
                 var textBlock = new TextBlock { TextAlignment = TextAlignment.Center, Text = recipeName, TextWrapping = TextWrapping.Wrap, Foreground =  TextColor[to_int(to_tier(recipe.Tier))]};
                 border.Child = textBlock;

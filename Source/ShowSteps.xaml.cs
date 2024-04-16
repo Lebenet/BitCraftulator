@@ -7,15 +7,14 @@ namespace BitCraftulator;
 
 public partial class ShowSteps : Window
 {
-    private int _quantity;
     private Dictionary<int, Dictionary<Recipe, int>> AllIngredients;
-    public ShowSteps(Stack<List<(Recipe,int)>> steps, int quantity)
+    private Dictionary<string, Tuple<Recipe, int>> RecipesByStation;
+    public ShowSteps(Stack<Tuple<Recipe, int>> recipes)
     {
         InitializeComponent();
 
-        _quantity = quantity;
         StepsGrid.RowDefinitions.Add(new RowDefinition {Height = new GridLength()});
-        AllIngredients = new Dictionary<int, Dictionary<Recipe, int>>
+        AllIngredients = new Dictionary<int, Dictionary<Recipe, int>>()
         {
             {1, new Dictionary<Recipe, int>()},
             {2, new Dictionary<Recipe, int>()},
@@ -28,48 +27,21 @@ public partial class ShowSteps : Window
         };
         
         var i = 0;
-        while (steps.Count > 0)
+        while (recipes.Count > 0)
         {
-            var step = steps.Pop();
-            List<Recipe> buildIngrs = new();
-            List<Recipe> newStep = new();
-            Dictionary<(Recipe, int), int> divs = new Dictionary<(Recipe, int), int>();
-            for (var j = 0; j < step.Count; j++)
+            var recipe = recipes.Pop();
+            Recipe r = recipe.Item1;
+            int q = recipe.Item2;
+            int t = r.Tier;
+            if (recipe.Item1.Ingredients!.Count == 0)
             {
-                Recipe recipe = step[j].Item1;
-                if (recipe.Ingredients!.Count == 0)
-                {
-                    buildIngrs.Add(recipe);
-                    if (!divs.ContainsKey((recipe, step[j].Item2)))
-                        divs[(recipe, step[j].Item2)] = 1;
-                    else
-                        divs[(recipe, step[j].Item2)]++;
-                }
+                if (AllIngredients[t].ContainsKey(r))
+                    AllIngredients[t][r] += q;
                 else
-                    newStep.Add(recipe);
+                    AllIngredients[t][r] = q;
             }
-
-            (Recipe, int)[] keys = new (Recipe, int)[divs.Keys.Count];
-            divs.Keys.CopyTo(keys, 0);
-            
-            foreach ((Recipe r, int nn) in keys)
-            {
-                int nn2 = divs[(r, nn)];
-                divs.Remove((r, nn));
-                divs[(r, nn2)] = nn;
-            }
-
-            foreach ((Recipe recipe, int n2) in CleanStep(buildIngrs))
-            {
-                int t;
-                if (!AllIngredients[recipe.Tier].ContainsKey(recipe))
-                    AllIngredients[recipe.Tier][recipe] = (t = (n2 * _quantity) / divs[(recipe,n2)]) > 0 ? t : 1;
-                else
-                    AllIngredients[recipe.Tier][recipe] += (t = (n2 * _quantity) / divs[(recipe,n2)]) > 0 ? t : 1;
-            }
-            
-            if (newStep.Count != 0)
-                DisplayStep(newStep, i++);
+            else if (!r.RecipeName!.Contains("Output"))
+                DisplayStep(recipe, i++);
         }
 
         DisplayIngredients();
@@ -85,7 +57,7 @@ public partial class ShowSteps : Window
         border.SetValue(Grid.RowProperty, 0);
         StepsGrid.Children.Add(border);
         
-        Grid elemsGrid = new Grid {Name = "Step1"};
+        Grid elemsGrid = new Grid();
         foreach (var key in AllIngredients.Keys)
             for (var i = 0; i <= AllIngredients[key].Count + AllIngredients.Count + 1; i++) elemsGrid.RowDefinitions.Add(new RowDefinition());
         border.Child = elemsGrid;
@@ -190,69 +162,59 @@ public partial class ShowSteps : Window
     }*/
     
 
-    public void DisplayStep(List<Recipe> stepRaw, int stepNumber)
+    public void DisplayStep(Tuple<Recipe, int> recipeRaw, int stepNumber)
     {
-        Dictionary<Recipe, int> step = CleanStep(stepRaw);
-        
         StepsGrid.RowDefinitions.Add(new RowDefinition {Height = new GridLength()});
         Border border = new Border { Background = Brushes.Azure, BorderBrush = Brushes.Gray, BorderThickness = new Thickness(0, 3, 0, 0)};
         border.SetValue(Grid.RowProperty, StepsGrid.Children.Count + 1);
         StepsGrid.Children.Add(border);
         
-        Grid elemsGrid = new Grid {Name = "Step1"};
-        for (var i = 0; i <= step.Count + 1; i++) elemsGrid.RowDefinitions.Add(new RowDefinition());
+        Grid elemsGrid = new Grid {Name = "Step"};
+        elemsGrid.RowDefinitions.Add(new RowDefinition());
+        elemsGrid.RowDefinitions.Add(new RowDefinition());
         border.Child = elemsGrid;
 
         Label stepLabel = new Label { Content = $"Step {stepNumber + 1}" };
         elemsGrid.Children.Add(stepLabel);
+        
+        
+        TextBlock line = new TextBlock { TextWrapping = TextWrapping.Wrap };
+        line.SetValue(Grid.RowProperty, elemsGrid.Children.Count);
+        Recipe recipe = recipeRaw.Item1;
+        int count = recipeRaw.Item2;
+        line.Text = $"{( recipe.Station!.ToLower().Contains("field") || recipe.Station!.ToLower().Contains("field") ? "Grow" : "Craft" )} {recipe.RecipeName} {count} times at {recipe.Station} with tool {recipe.SkillTool} (required level {recipe.SkillLevel} minimum in {recipe.SkillName} skill)";
 
-        foreach (var elem in step.Keys)
+        // Add a StackPanel to hold the line and the delete button
+        StackPanel panel = new StackPanel { Orientation = Orientation.Horizontal };
+
+        // Add a button dynamically
+        Button deleteButton = new Button { Content = "X", Visibility = Visibility.Hidden, HorizontalAlignment = HorizontalAlignment.Left, Background = Brushes.Red, Width = 20};
+        deleteButton.Click += (sender, e) =>
         {
-            int t;
-            if (elem.RecipeName.Contains("Output"))
-                continue;
+            // Remove the element when the button is clicked
+            elemsGrid.Children.Remove(panel);
+            UpdateStepsStatus();
+        };
 
-            TextBlock line = new TextBlock { TextWrapping = TextWrapping.Wrap };
+        // Add the delete button to the StackPanel
+        panel.Children.Add(deleteButton);
 
-            // Add a StackPanel to hold the line and the delete button
-            StackPanel panel = new StackPanel { Orientation = Orientation.Horizontal };
+        panel.MouseEnter += (sender, e) =>
+        {
+            // Show the delete button when the mouse enters the element
+            deleteButton.Visibility = Visibility.Visible;
+        };
 
-            // Add a button dynamically
-            Button deleteButton = new Button { Content = "X", Visibility = Visibility.Hidden, HorizontalAlignment = HorizontalAlignment.Left, Background = Brushes.Red, Width = 20};
-            deleteButton.Click += (sender, e) =>
-            {
-                // Remove the element when the button is clicked
-                elemsGrid.Children.Remove(panel);
-                UpdateStepsStatus();
-            };
+        panel.MouseLeave += (sender, e) =>
+        {
+            // Hide the delete button when the mouse leaves the element
+            deleteButton.Visibility = Visibility.Hidden;
+        };
 
-            // Add the delete button to the StackPanel
-            panel.Children.Add(deleteButton);
-
-            panel.MouseEnter += (sender, e) =>
-            {
-                // Show the delete button when the mouse enters the element
-                deleteButton.Visibility = Visibility.Visible;
-            };
-
-            panel.MouseLeave += (sender, e) =>
-            {
-                // Hide the delete button when the mouse leaves the element
-                deleteButton.Visibility = Visibility.Hidden;
-            };
-
-            // Add the line to the StackPanel
-            panel.Children.Add(line);
-            panel.SetValue(Grid.RowProperty, elemsGrid.Children.Count);
-
-            if (elem.Ingredients!.Count == 0)
-                line.Text = $"Get {step[elem] * _quantity} {elem.RecipeName}";
-            else
-                line.Text = $"{( elem.Station!.ToLower().Contains("field") || elem.Station!.ToLower().Contains("pot") ? "Grow" : "Craft" )} {(elem.Ingredients.Count == 1 && elem.Ingredients[0].Name.Contains("Output") ? (t =((t = (step[elem] * _quantity - 1) / elem.Output[0].Quantity) > 0 ? t+1 : 1)) : (t =((t = (step[elem] * _quantity - 1) / elem.Output[0].Quantity) > 0 ? t+1 : 1)) + (elem.Output![0].Quantity * _quantity * step[elem] != 1 && elem.Output![0].Quantity * step[elem] * _quantity != step[elem] * _quantity ? $" (gives {t = elem.Output![0].Quantity * t}{(t == _quantity * step[elem] ? "" : $", need {_quantity * step[elem]}")})" : ""))} {elem.RecipeName} at {elem.Station} with tool {elem.SkillTool} (required level {elem.SkillLevel} minimum in {elem.SkillName} skill)";
-
-            // Add the StackPanel to the grid
-            elemsGrid.Children.Add(panel);
-        }
+        // Add the line to the StackPanel
+        panel.Children.Add(line);
+        panel.SetValue(Grid.RowProperty, elemsGrid.Children.Count);
+        elemsGrid.Children.Add(panel);
 
     }
 
@@ -265,29 +227,5 @@ public partial class ShowSteps : Window
             if (grid.Children.Count == 1)
                 StepsGrid.Children.Remove(step);
         }
-                
-    }
-
-    public Dictionary<Recipe, int> CleanStep(List<Recipe> stepRaw)
-    {
-        var res = new Dictionary<Recipe, int>();
-
-        foreach (var elem in stepRaw)
-        {
-            if (Contains(res, elem))
-                res[elem]++;
-            else
-                res[elem] = 1;
-        }
-
-        return res;
-    }
-
-    public bool Contains(Dictionary<Recipe, int> dico, Recipe check)
-    {
-        foreach (var elem in dico.Keys)
-            if (elem.RecipeName == check.RecipeName)
-                return true;
-        return false;
     }
 }

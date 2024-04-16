@@ -144,7 +144,7 @@
                        <StackPanel Grid.Column="0" Margin="-20,0,20,0">
                            <Label Content="Input" FontSize="20" HorizontalContentAlignment="Center" HorizontalAlignment="Center"/>
                            <Border Margin="2,0,0,0" BorderThickness="3" BorderBrush="Black" Background="#555352">
-                               <ScrollViewer Margin="3,3,4,0" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+                               <ScrollViewer Margin="3,3,4,0" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" MaxHeight="350" Height="Auto">
                                    <Grid Name="Ingredients">
                                        
                                    </Grid>
