@@ -90,48 +90,51 @@ public partial class MainWindow : Window
         var recipes = JsonConvert.DeserializeObject<List<Recipe>>(File.ReadAllText("Recipes.json"));
         foreach (var recipe in recipes!)
         {
-            // fix issue with High Quality ( not really cos there's random but eh)
-            if (recipe.Ingredients!.Count == 1)
+            if (recipe.IsValid())
             {
-                var output = recipe.Output![0];
-                var ingredient = recipe.Ingredients![0];
-                if (ingredient.Name!.Contains("High Quality") && !output.Name!.Contains("Supplies") && !output.Name.Contains("Source"))
+                // fix issue with High Quality ( not really cos there's random but eh)
+                if (recipe.Ingredients!.Count == 1)
                 {
-                    ingredient.Name = ingredient.Name!.Replace("High Quality", "").Trim() + " Output";
-                    recipe.Output![0].Quantity = 1;
+                    var output = recipe.Output![0];
+                    var ingredient = recipe.Ingredients![0];
+                    if (ingredient.Name!.Contains("High Quality") && !output.Name!.Contains("Supplies") && !output.Name.Contains("Source"))
+                    {
+                        ingredient.Name = ingredient.Name!.Replace("High Quality", "").Trim() + " Output";
+                        recipe.Output![0].Quantity = 1;
+                    }
                 }
-            }
                     
-            if (recipe.Ingredients!.Count > 0 || recipe.Tier-1 >= 7)
-            {
-                if (!Recipes.ContainsKey(recipe.RecipeName!))
+                if (recipe.Ingredients!.Count > 0 || recipe.Tier-1 >= 7)
                 {
-                    RecipesByTier[recipe.Tier-1 < 7 ? recipe.Tier-1 : 7][recipe.RecipeName!] = recipe;
-                    Recipes[recipe.RecipeName!] = recipe;
+                    if (!Recipes.ContainsKey(recipe.RecipeName!))
+                    {
+                        RecipesByTier[recipe.Tier-1 < 7 ? recipe.Tier-1 : 7][recipe.RecipeName!] = recipe;
+                        Recipes[recipe.RecipeName!] = recipe;
+                    }
+                    else
+                    {
+                        string n = recipe.RecipeName! + "\u200e";
+                        while (Recipes.ContainsKey(n))
+                            n += "\u200e";
+                        RecipesByTier[recipe.Tier-1 < 7 ? recipe.Tier-1 : 7][n] = recipe;
+                        Recipes[n] = recipe;
+                    }
                 }
                 else
                 {
-                    string n = recipe.RecipeName! + "\u200e";
-                    while (Recipes.ContainsKey(n))
-                        n += "\u200e";
-                    RecipesByTier[recipe.Tier-1 < 7 ? recipe.Tier-1 : 7][n] = recipe;
-                    Recipes[n] = recipe;
-                }
-            }
-            else
-            {
-                if (!Items.ContainsKey(recipe.RecipeName!))
-                {
-                    ItemsByTier[recipe.Tier-1][recipe.RecipeName!] = recipe;
-                    Items[recipe.RecipeName!] = recipe;
-                }
-                else
-                {
-                    string n = recipe.RecipeName! + "\u200e";
-                    while (Recipes.ContainsKey(n))
-                        n += "\u200e";
-                    ItemsByTier[recipe.Tier-1][n] = recipe;
-                    Items[n] = recipe;
+                    if (!Items.ContainsKey(recipe.RecipeName!))
+                    {
+                        ItemsByTier[recipe.Tier-1][recipe.RecipeName!] = recipe;
+                        Items[recipe.RecipeName!] = recipe;
+                    }
+                    else
+                    {
+                        string n = recipe.RecipeName! + "\u200e";
+                        while (Recipes.ContainsKey(n))
+                            n += "\u200e";
+                        ItemsByTier[recipe.Tier-1][n] = recipe;
+                        Items[n] = recipe;
+                    }
                 }
             }
         }
@@ -279,7 +282,12 @@ public partial class MainWindow : Window
         }
 
         foreach ((string name, int quantity) in rawMaterials)
-            steps.Push(new Tuple<Recipe, int>(Items[name], quantity));
+        {
+            if (Items.ContainsKey(name))
+            {
+                steps.Push(new Tuple<Recipe, int>(Items[name], quantity)); 
+            }
+        }
         
         var stepsWindow = new ShowSteps(steps);
         stepsWindow.Show();
@@ -306,9 +314,11 @@ public partial class MainWindow : Window
 
         quantities[recipeName] = target;
 
-        string? next = graph.Take();
+        var next = graph.Take();
         while (next != null)
         {
+            Console.WriteLine($"Next item in recipe calculation: {next}");
+            Console.WriteLine($"Graph is now: {graph.NodesToString()}");
             Recipe? recipe = graph.GetRecipe(next);
             if (recipe == null)
             {
@@ -350,16 +360,16 @@ public partial class MainWindow : Window
         foreach (var ingredient in rawMaterials.Keys)
         {
             Ingredients.RowDefinitions.Add(new RowDefinition());
-            TextBlock textblock = new TextBlock { Text = $"{ingredient}: {rawMaterials[ingredient]}", HorizontalAlignment = HorizontalAlignment.Center, TextWrapping = TextWrapping.Wrap, Foreground = Brushes.White };
-            textblock.SetValue(Grid.RowProperty, Ingredients.Children.Count);
-            Ingredients.Children.Add(textblock);
+            TextBlock inputText = new TextBlock { Text = $"{ingredient}: {rawMaterials[ingredient]}", HorizontalAlignment = HorizontalAlignment.Center, TextWrapping = TextWrapping.Wrap, Foreground = Brushes.White };
+            inputText.SetValue(Grid.RowProperty, Ingredients.Children.Count);
+            Ingredients.Children.Add(inputText);
         }
         
         Output.Children.Clear();
         Output.RowDefinitions.Add(new RowDefinition());
-        TextBlock outputBlock = new TextBlock { Text = $"{recipeName}: {outputCount}", HorizontalAlignment = HorizontalAlignment.Center, TextWrapping = TextWrapping.Wrap, Foreground = Brushes.White  };
-        outputBlock.SetValue(Grid.RowProperty, Output.Children.Count);
-        Output.Children.Add(outputBlock);
+        TextBlock outputText = new TextBlock { Text = $"{recipeName}: {outputCount}", HorizontalAlignment = HorizontalAlignment.Center, TextWrapping = TextWrapping.Wrap, Foreground = Brushes.White  };
+        outputText.SetValue(Grid.RowProperty, Output.Children.Count);
+        Output.Children.Add(outputText);
     }
     
     public void DisplayRecipeIngredients(string recipeName)
