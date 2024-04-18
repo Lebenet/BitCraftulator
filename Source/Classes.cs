@@ -91,6 +91,16 @@ public class Recipe{
           set => _output = value ?? throw new ArgumentException("Output is required");
      }
 
+     public bool IsValid()
+     {
+          return !string.IsNullOrEmpty(_recipeName) &&
+                 !string.IsNullOrEmpty(_skillName) &&
+                 !string.IsNullOrEmpty(_skillTool) &&
+                 !string.IsNullOrEmpty(_station) &&
+                 _ingredients is { Count: > 0 } &&
+                 _output is { Count: 1 };
+     }
+
      public override string ToString()
      {
           string res = $"['{RecipeName}'] :\r\n\tTier: {Tier}\r\n\tSkill: {SkillName}\r\n\t\tLevel: {SkillLevel}\r\n\t\tTool: {SkillTool}\r\n\t\tStation: {Station}\r\n\tIngredient{(Ingredients!.Count>1?"s":"")}: ({Ingredients!.Count})\r\n";
@@ -112,58 +122,41 @@ public class DependencyGraph(List<Recipe> recipes)
 
      public void Add(string name)
      {
-          if (_nodes.ContainsKey(name)) return;
-          AddInternal(name);
+          var node = GetNode(name);
+          SetDependencies(node);
      }
 
-     private Node AddInternal(string name)
+     private Node GetNode(string name)
      {
           if (_nodes.TryGetValue(name, out var ret)) return ret;
           
-          Console.WriteLine($"Creating node for item \"{name}\"");
-          
-          Node node = new Node(name);
-          _nodes[node.Name] = node;
-
-          Recipe? recipe = GetRecipe(name);
-          if (recipe != null)
-          {
-               if (recipe.Ingredients != null)
-               {
-                    bool isCircular = false;
-                    foreach (Ingredient ingredient in recipe.Ingredients)
-                    {
-                         if (_nodes.TryGetValue(ingredient.Name!, out var ingredientNode))
-                         {
-                              if (ingredientNode.HasDependency(node))
-                              {
-                                   isCircular = true;
-                                   break;
-                              }
-                         }
-                    }
-
-                    if (isCircular) return node;
-                    
-                    Console.WriteLine($"Found recipe \"{recipe.RecipeName}\" with ingredients [{IngredientsToString(recipe.Ingredients!)}]");
-                    
-                    foreach (Ingredient ingredient in recipe.Ingredients)
-                    {
-                         var ingredientNode = AddInternal(ingredient.Name!);
-                         node.Dependencies.Add(ingredientNode);
-                         ingredientNode.Dependents.Add(node);
-                    }
-               }
-          }
-
+          var node = new Node(name);
+          _nodes[name] = node;
           return node;
      }
 
-     public string IngredientsToString(List<Ingredient> ingredients)
+     private void SetDependencies(Node node, int maxDepth = 100)
      {
-          return string.Join(", ", ingredients.ConvertAll(e => $"{e.Quantity} {e.Name}"));
+          if (maxDepth <= 0) return;
+          if (node.Dependencies.Count > 0) return;
+          
+          Console.WriteLine($"Setting dependencies for {node.Name}");
+          var recipe = GetRecipe(node.Name);
+          if (recipe != null)
+          {
+               foreach (var ingredient in recipe.Ingredients!)
+               {
+                    var ingredientNode = GetNode(ingredient.Name!);
+                    if (node != ingredientNode && !node.Dependencies.Contains(ingredientNode) && !ingredientNode.HasDependency(node))
+                    {
+                         node.Dependencies.Add(ingredientNode);
+                         ingredientNode.Dependents.Add(node);
+                         SetDependencies(ingredientNode, maxDepth - 1);
+                    }
+               }
+          }
      }
-
+     
      public string? Take()
      {
           foreach (Node node in _nodes.Values.ToList())
@@ -207,6 +200,11 @@ public class DependencyGraph(List<Recipe> recipes)
           }
 
           return null;
+     }
+
+     public string NodesToString()
+     {
+          return string.Join(", ", _nodes.Keys);
      }
      
      private class Node(string name)
