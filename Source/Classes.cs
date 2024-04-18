@@ -98,7 +98,8 @@ public class Recipe{
                  !string.IsNullOrEmpty(_skillTool) &&
                  !string.IsNullOrEmpty(_station) &&
                  _ingredients is { Count: > 0 } &&
-                 _output is { Count: 1 };
+                 _output is { Count: 1 }
+                 || Tier-1 >= 7; // to have dev items listed as recipes even though they don't have a recipre
      }
 
      public override string ToString()

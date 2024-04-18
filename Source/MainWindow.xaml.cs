@@ -103,38 +103,34 @@ public partial class MainWindow : Window
                         recipe.Output![0].Quantity = 1;
                     }
                 }
-                    
-                if (recipe.Ingredients!.Count > 0 || recipe.Tier-1 >= 7)
+                if (!Recipes.ContainsKey(recipe.RecipeName!))
                 {
-                    if (!Recipes.ContainsKey(recipe.RecipeName!))
-                    {
-                        RecipesByTier[recipe.Tier-1 < 7 ? recipe.Tier-1 : 7][recipe.RecipeName!] = recipe;
-                        Recipes[recipe.RecipeName!] = recipe;
-                    }
-                    else
-                    {
-                        string n = recipe.RecipeName! + "\u200e";
-                        while (Recipes.ContainsKey(n))
-                            n += "\u200e";
-                        RecipesByTier[recipe.Tier-1 < 7 ? recipe.Tier-1 : 7][n] = recipe;
-                        Recipes[n] = recipe;
-                    }
+                    RecipesByTier[recipe.Tier-1 < 7 ? recipe.Tier-1 : 7][recipe.RecipeName!] = recipe;
+                    Recipes[recipe.RecipeName!] = recipe;
                 }
                 else
                 {
-                    if (!Items.ContainsKey(recipe.RecipeName!))
-                    {
-                        ItemsByTier[recipe.Tier-1][recipe.RecipeName!] = recipe;
-                        Items[recipe.RecipeName!] = recipe;
-                    }
-                    else
-                    {
-                        string n = recipe.RecipeName! + "\u200e";
-                        while (Recipes.ContainsKey(n))
-                            n += "\u200e";
-                        ItemsByTier[recipe.Tier-1][n] = recipe;
-                        Items[n] = recipe;
-                    }
+                    string n = recipe.RecipeName! + "\u200e";
+                    while (Recipes.ContainsKey(n))
+                        n += "\u200e";
+                    RecipesByTier[recipe.Tier-1 < 7 ? recipe.Tier-1 : 7][n] = recipe;
+                    Recipes[n] = recipe;
+                }
+            }
+            else // item (no recipe)
+            {
+                if (!Items.ContainsKey(recipe.RecipeName!))
+                {
+                    ItemsByTier[recipe.Tier-1][recipe.RecipeName!] = recipe;
+                    Items[recipe.RecipeName!] = recipe;
+                }
+                else
+                {
+                    string n = recipe.RecipeName! + "\u200e";
+                    while (Recipes.ContainsKey(n))
+                        n += "\u200e";
+                    ItemsByTier[recipe.Tier-1][n] = recipe;
+                    Items[n] = recipe;
                 }
             }
         }

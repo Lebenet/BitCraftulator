@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System.IO;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Media;
@@ -7,12 +8,16 @@ namespace BitCraftulator;
 
 public partial class ShowSteps : Window
 {
+    private List<TextBlock> ingredients;
+    private List<TextBlock> crafts;
     private Dictionary<int, Dictionary<Recipe, int>> AllIngredients;
     private Dictionary<string, Tuple<Recipe, int>> RecipesByStation;
     public ShowSteps(Stack<Tuple<Recipe, int>> recipes)
     {
         InitializeComponent();
 
+        ingredients = new ();
+        crafts = new();
         StepsGrid.RowDefinitions.Add(new RowDefinition {Height = new GridLength()});
         AllIngredients = new Dictionary<int, Dictionary<Recipe, int>>()
         {
@@ -47,6 +52,7 @@ public partial class ShowSteps : Window
         DisplayIngredients();
         
         Close.Click += (sender, e) => Close();
+        WriteRecipe.Click += (sender, e) => WriteToFile();
         //Console.WriteLine(StepsGrid.Children.Count);
     }
 
@@ -72,11 +78,13 @@ public partial class ShowSteps : Window
                 continue;
             
             TextBlock tier = new TextBlock { Text = $"Tier {++j}:", FontWeight = FontWeights.Bold, TextDecorations = TextDecorations.Underline, FontSize = FontSize + 2 };
+            ingredients.Add(tier);
             tier.SetValue(Grid.RowProperty, elemsGrid.Children.Count);
             elemsGrid.Children.Add(tier);
             foreach (var recipe in AllIngredients[elem].Keys)
             {
                 TextBlock line = new TextBlock { TextWrapping = TextWrapping.Wrap };
+                ingredients.Add(line);
 
                 // Add a StackPanel to hold the line and the delete button
                 StackPanel panel = new StackPanel { Orientation = Orientation.Horizontal };
@@ -179,6 +187,7 @@ public partial class ShowSteps : Window
         
         
         TextBlock line = new TextBlock { TextWrapping = TextWrapping.Wrap };
+        crafts.Add(line);
         line.SetValue(Grid.RowProperty, elemsGrid.Children.Count);
         Recipe recipe = recipeRaw.Item1;
         int count = recipeRaw.Item2;
@@ -227,5 +236,40 @@ public partial class ShowSteps : Window
             if (grid.Children.Count == 1)
                 StepsGrid.Children.Remove(step);
         }
+    }
+
+    public void WriteToFile()
+    {
+        string recipeAsStringMd = "### Ingredients:\r\n";
+        string recipeAsStringTxt = "Ingredients:\r\n";
+
+        foreach (var line in ingredients)
+        {
+            if (line.Text.EndsWith(":"))
+            {
+                recipeAsStringMd += $"\r\n####{line.Text}\r\n";
+                recipeAsStringTxt += $"\r\n {line.Text}\r\n";
+            }
+            else
+            {
+                recipeAsStringMd += "-" + line.Text + "\r\n";
+                recipeAsStringTxt += $"\t{line.Text}\r\n";
+            }
+        }
+
+        int i = 1;
+        foreach (var craft in crafts)
+        {
+            recipeAsStringMd += $"#####Step{i}\r\n- {craft.Text}\r\n";
+            recipeAsStringTxt += $" Step{i}\r\n\t- {craft.Text}\r\n";
+            i++;
+        }
+
+        Directory.CreateDirectory("../outputs");
+        
+        using (var sw = new StreamWriter("../outputs/output.md"))
+            sw.Write(recipeAsStringMd);
+        using (var sw = new StreamWriter("../outputs/output.txt"))
+            sw.Write(recipeAsStringTxt);
     }
 }
