@@ -1,7 +1,9 @@
 # OUTDATED
 This project is (currently) out-of-date, it was created for and used in Alpha 2 and 3
 Many upgrades could be done, and I will most likely start working on this again when 
-1. I have access to the game, 2. They authorize access to their DB again, and 3. I simply have the time for it
+1. I have access to the game,
+2. They authorize access to their DB again, and
+3. I simply have the time for it
 
 As of for now, I recommend checking out BitPlanner or BitHub
 
